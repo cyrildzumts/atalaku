@@ -1,0 +1,94 @@
+{% extends "base_flat.html"%}
+{% load i18n %} 
+
+{% block MAIN %}
+<div class="container">
+<ul class="mat-list">
+    <li class="mat-item">
+        <div class="collapsible">
+            <div class="title">
+                <h3>{% trans "How can I add an Even to my favorite list ?" %}</h3>
+            </div>
+            <div class="content collapsible-content">
+                <p>
+                    {% blocktrans %}
+                    A Transfer is transaction where a user A sends money to a User B. 
+                    The User A is debited with the amount to send while the User B Account is augmented with the received amount. 
+                    This Operation is not cancelable.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </li>
+    <li class="mat-item">
+        <div class="collapsible">
+            <div class="title">
+                <h3>{% trans "How can I buy a Ticket ?" %}</h3>
+            </div>
+            <div class="content collapsible-content">
+                <p>
+                    {% blocktrans %}
+                    A Payment is a trade of values from one party to another for goods or services. 
+                    The mean of payment is money. The user receiving the payment must have a business account.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </li>
+    <li class="mat-item">
+        <div class="collapsible">
+            <div class="title">
+                <h3>{% trans "What happend with my Ticket when an Event is canceled ?" %}</h3>
+            </div>
+            <div class="content collapsible-content">
+                <p>
+                    {% blocktrans %}
+                    A service is offered by one or more entities in exchange for money.
+                    A service is a transaction in which no physical good is transferred from the seller to the buyer. 
+                    To offer a service the seller must have a business account.
+                    
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </li>
+    <li class="mat-item">
+        <div class="collapsible">
+            <div class="title">
+                <h3>{% trans "Is it possible to cancel my Ticket ?" %}</h3>
+            </div>
+            <div class="content collapsible-content">
+                <p>
+                    {% blocktrans %}
+                    From the home Page it is possible to navigate to list of available services that can be consumed by the users. 
+                    On the main top bar header, click on the Available Services link.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </li>
+    <li class="mat-item">
+        <div class="collapsible">
+            <div class="title">
+                <h3>{% trans "Are you the organisator of the Events listed  ?" %}</h3>
+            </div>
+            <div class="content collapsible-content">
+                <p>
+                    {% blocktrans trimmed %}
+                    To recharge your Account Balance you can buy Voucher Code from our sell points in Douala. 
+                Once you get your Voucher Code, you log in your Account and click to "RECHARGE MY BALANCE" link. 
+                From there now enter your Voucher Code and validate.If the code is valid your Balance will be updated to the new amount. 
+                A confirmation message is sent your registered email.
+                    {% endblocktrans %}
+                </p>
+                <p>{% trans "You also have the possibility to let one of our Agent to recharge your account directly." %}</p>
+            </div>
+        </div>
+    </li>
+    
+
+</ul>
+
+</div>
+
+{% endblock MAIN %}

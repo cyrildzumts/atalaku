@@ -1,0 +1,19 @@
+{% extends "flat_minimal_base.html" %}
+{% load i18n %} 
+{% block MAINCONTENT %}
+    <div  class="flat-card">
+        <section class="flat-row flex-center">
+            <div class="header">
+                {% trans "Serveur en maintenance :  500 ! Oups !" %}
+            </div>
+            <div class="flat-main-content">
+                    <p> 
+                        {% blocktrans %}Le serveur est actuellement en maintenance.
+veuillez revenir plus tard. Nos techniciens resolvent le problème.
+                        {% endblocktrans %}
+                    </p>
+                    
+            </div>
+        </section>
+    </div> 
+  {% endblock MAINCONTENT %}

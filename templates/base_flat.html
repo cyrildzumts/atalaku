@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+
+{% load i18n %} 
+<head>
+        <meta charset="utf-8">
+        {% block META_REDIRECT %}
+        
+        {% endblock META_REDIRECT %}
+        <title>
+                {% block title %} {{page_title}} {% endblock %}
+        </title>
+        <meta name="keywords" content="{{meta_keywords}}" />
+        <meta name="description" content="{{meta_description}}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% load static %}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+        
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <!-- Add icon library -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" media="all" />
+
+        {% block external %} {% endblock external %}
+</head>
+
+<body>
+        <header class="header">
+{% block HEADER_PANEL %}
+<div class="header--panel row">
+  <div class="col col-1">
+    <div class="logo">
+      <a class="link link-logo" href="{%url 'home'%}"> {{site_name}} </a>
+    </div>
+  </div>
+  <div class="col col-11">
+    <nav class="nav">
+        <a class="mat-button mat-button-text" href="{% url 'events:event-home' %}">Events</a>
+      {% if request.user.is_authenticated %}
+      <a class="mat-button mat-button-text" href="{% url 'accounts:account' %}">{% trans 'My Account' %}</a>
+      <a class="signout-btn mat-button mat-button-text signout" href="{% url 'accounts:logout' %}">{% trans 'Logout' %}</a>
+      {% else %}
+      <a id="register-link" class="mat-button mat-button-text" href="{% url 'accounts:register' %}" data-tab="1" data-target="#signup-dialog">{% trans 'Create an Account' %}</a>
+      <a id="login-link" class="mat-button mat-button-text" href="{% url 'accounts:login' %}" data-tab="0" data-target="#signup-dialog">{% trans 'Login' %}</a>
+
+      {% endif %}
+      <div class="languages">
+        <form id="lang-form" class="lang-form" action="{% url 'set_language' %}" method="POST">{% csrf_token %}
+                <input name="next" type="hidden" value="{{redirect_to}}">
+                <input id="current-lang" type="hidden" name="language" value="">
+        </form>
+        <div class="row">
+                {% for lang in LANGUAGES %}
+                {% if lang.0 == LANGUAGE_CODE %}
+                <span class="js-lang mat-button mat-button-text lang active" title="{{lang.1}}"> {{lang.0}} </span>
+                {% else %}
+                <span class="js-lang mat-button mat-button-text lang" title="{{lang.1}}"> {{lang.0}} </span> 
+                {% endif %}
+                {% endfor %}
+        </div>
+      
+      </div>
+      {% include "tags/search_tag.html" %}
+    </nav>
+  </div>
+</div>
+{% endblock HEADER_PANEL %}
+                {% block GRID %}
+                <button class="js-grid-enable baseline-grid-btn">Enable Grid</button>
+                {% endblock GRID %}
+                
+        </header>
+        <div class="page">
+                
+                <div class="page--banner">
+                        {% block HEADER_BANNER %}
+                        {% endblock HEADER_BANNER %}
+                </div>
+                {% block MESSAGES %}
+                {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+                {% endfor %}
+                
+                </ul>
+                
+                {% endif %}
+                
+                {% endblock MESSAGES %}
+
+                 {% block SIGNUP_DIALOG %}
+                
+                {% endblock SIGNUP_DIALOG %}
+
+                <main class="container">
+                {% block MAIN %}
+                
+                {% endblock MAIN %}
+                </main>
+
+                <footer class="footer column row">
+                {% block FOOTER %}
+                
+                {% endblock FOOTER %}
+
+                <div class="footer-list">
+                        {% now "Y" as current_year %}
+                        <ul class="flex">
+                                <li class="list-item flex"><div class="copyright">Copyright <i class="fa fa-copyright"></i><span class="copyright-year">{{current_year}}</span> </div> <div class="site">{{site_name}} - {%trans 'African Events' %} </div></li>
+                                <li class="list-item"><a class="mat-button mat-button-text" href="{% url 'about' %}">{% trans "About us" %}</a></li>
+                                <li class="list-item"><a class="mat-button mat-button-text" href="{% url 'faq' %}">{% trans "FAQ" %}</a></li>
+                        </ul>
+                </div>
+                </footer>
+        </div>
+
+         <script  src="{% static 'js/jquery-3.4.0.min.js' %}"></script>
+        <script  type="application/javascript" src="{% static 'js/atalaku.js' %}"></script> 
+</body>
+
+</html>

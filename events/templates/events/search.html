@@ -1,0 +1,39 @@
+{% extends "event_base.html" %}
+{% load i18n %}
+
+{% block HEADER_BANNER %}
+    <div class="banner banner-align-left">
+        <div class="container">
+            <div class="col col-9">
+                <div class="banner--content flex-column">
+                    <div class="row row-left"><span class="item"><h4>{{category.name}}</h4></span></div>
+                </div><!--End of Banner-Content-->
+                <div class="banner--actions">
+                </div><!--End of Banner-Actions-->
+            </div><!--End of Responsive-->
+        
+        </div><!--End of Container-->
+        
+    </div>
+{% endblock HEADER_BANNER %}
+
+{% block MAIN %}
+<div class="container">
+    {% if events %}
+    <h3>{% trans "Events Search Results" %}</h3>
+    <div class="row">
+        
+            {% for event in events %}
+                <div class="box respective">
+                    <span>{{event.name}}</span>
+                    <span>{{event.when}}</span>
+                    <span>{{event.country}}</span>
+                    <span> <a  class="mat-button mat-button-outlined" href="{% url 'events:event-detail' event.event_uuid %}">{% trans "Details" %}</a></span>
+                </div>
+            {% endfor %}       
+        
+    </div>
+    {% endif %}
+</div>
+
+{% endblock MAIN %} 

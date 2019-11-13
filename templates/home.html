@@ -1,0 +1,40 @@
+{% extends "base_flat.html" %}
+{% load i18n %} 
+
+{% block HEADER_BANNER %}
+<div class="banner">
+    <div class="banner--title">
+      <h1> {%trans 'Welcome to Atalaku'%} </h1>
+      <h3>{% trans 'Your Africans Events Center' %}</h3>
+    </div><!--End of Banner Titlte-->
+    <div class="banner--content">
+        <p class="banner--description">
+          {% blocktrans %}
+            Publish your Event and let it be seen by thousand of interested people.
+          {% endblocktrans %}
+        </p>
+    </div><!--End of Banner Content-->
+      
+  <div class="banner--actions">
+    <button class="mat-button mat-button-default"> {% trans 'Discover Atalaku' %} </button>
+  </div><!--End of Banner Actions-->
+  
+</div><!--End of Banner-->
+{% endblock HEADER_BANNER %}
+
+{% block SIGNUP_DIALOG %}
+
+{% endblock SIGNUP_DIALOG %}
+
+
+{% block MAIN %}
+<div class="row">
+  <div class="full welcome-text center">
+    <h3> {%trans "ATALAKU ! Your online Events Board"%} </h3>
+  </div>
+</div>
+<div class="grid">
+    <a class="mat-button mat-button-default" href="{% url 'events:event-create' %}">{% trans "Add Event" %}</a>
+    <a class="mat-button mat-button-outlined" href="{% url 'events:event-home' %}">{% trans "See Events" %}</a>
+</div>
+{% endblock MAIN %}

@@ -24,7 +24,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['ATALAKU_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1', os.environ['ATALAKU_ALLOWED_HOST']]
 
@@ -32,7 +31,6 @@ SITE_NAME = os.environ['ATALAKU_SITE_NAME']
 META_KEYWORDS = "Event,Events, Africa, Africans, Africains, Evènement, Publicité, publication, party, fête,anniversaire"
 META_DESCRIPTION = "ATALAKU est un site de publication des evenements africains qui on lieu n'importe où dans le monde"
 # Application definition
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 INSTALLED_APPS = [
@@ -79,32 +77,6 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'atalaku.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'dev': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    'production': {
-	'ENGINE':   os.environ['ATALAKU_DEFAULT_ENGINE'],
-	'NAME'	:   os.environ['ATALAKU_DATABASE_NAME'],
-	'USER'	:   os.environ['ATALAKU_DATABASE_USERNAME'],
-	'PASSWORD': os.environ['ATALAKU_DATABASE_PW'],
-	'HOST'	:   os.environ['ATALAKU_DATABASE_HOST'] ,
-	'PORT' 	:   os.environ['ATALAKU_DATABASE_PORT'],
-    'TEST'  :   {
-        'NAME': 'test_db',
-    },
-   },
-
-}
-
-DEFAULT_DATABASE = os.environ.get('DJANGO_DATABASE', 'dev')
-DATABASES['default'] = DATABASES[DEFAULT_DATABASE]
 
 
 # Password validation

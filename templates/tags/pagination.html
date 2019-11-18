@@ -1,0 +1,24 @@
+{% load i18n %} 
+
+{% if events.has_other_pages %}
+
+<ul class="pagination">
+    {% if events.has_previous %}
+    <li class="page"><a href="?page={{events.previous_page_number}}">&laquo;</a></li>
+    {% else %}
+    <li class="page disabled">&laquo;</li>
+    {% endif %}
+    {% for i in events.paginator.page_range  %}
+    {% if i == events.number %}
+    <li class="page active"><span>{{i}} <span class="sr-only">({% trans "current" %})</span> </span></li>
+    {% else %}
+    <li class="page"><a href="?page={{i}}">{{i}}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if events.has_next %}
+    <li class="page"><a href="?page={{events.next_page_number}}">&raquo;</a></li>
+    {% else %}
+    <li class="page disabled">&raquo;</li>
+    {% endif %}
+</ul>
+{% endif %}

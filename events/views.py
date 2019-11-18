@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from events.models import Event, Category
 from events.forms import EventForm, EventCancelForm, CategoryForm, EventSearchForm, TicketForm
 from events.event_services import EventService
@@ -11,9 +12,21 @@ logger = logging.getLogger(__name__)
 
 
 def event_home(request):
-    events = EventService.get_events(start=0, end=5)
+    event_list = EventService.get_events()
     page_title = 'Events Home'
     template_name = 'events/event_home.html'
+    page = request.GET.get('page', 1)
+    paginator = Paginator(event_list, 10)
+    logger.debug("Events requested page : %s", page)
+    logger.debug("Events List - Number of Pages  : %s", paginator.num_pages)
+    try:
+        events = paginator.page(page)
+    except PageNotAnInteger:
+        events = paginator.page(1)
+        logger.debug("Events requested page not an Integer : %s", page)
+    except EmptyPage:
+        events = None
+        logger.debug("Events requested page : %s - Empty page resulted -", page)
     context = {
         'events': events,
         'page_title': page_title
@@ -22,7 +35,15 @@ def event_home(request):
 
 # Create your views here.
 def events(request):
-    events = EventService.get_events()
+    event_list = EventService.get_events()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(event_list, 1)
+    try:
+        events = paginator.page(page)
+    except PageNotAnInteger:
+        events = paginator.page(1)
+    except EmptyPage:
+        events = paginator.page(paginator.num_pages)
     page_title = 'Events'
     template_name = 'events/events.html'
     context = {

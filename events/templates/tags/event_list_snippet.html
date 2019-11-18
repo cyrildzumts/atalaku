@@ -47,6 +47,9 @@
         
         {% empty %}
             <p>{% trans "There is no events currently. You can revisite this page at a later time." %}</p>
-        {% endfor %}   
+        {% endfor %} 
+
+        {% include "tags/pagination.html" %} 
         </div>
+
 </div>

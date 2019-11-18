@@ -1,5 +1,6 @@
 from atalaku import settings
 
+
 def site_context(request):
     context = {
         'site_name' : settings.SITE_NAME,

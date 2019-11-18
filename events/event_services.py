@@ -27,12 +27,12 @@ class EventService:
 
 
     @staticmethod
-    def get_events(start=0, end=10, **filters):
+    def get_events(start=None, end=None, **filters):
         events = Event.objects.filter(**filters)[start:end]
         return events
 
     @staticmethod
-    def get_events_published_by_users(start=0, end=10, user=None, **filters):
+    def get_events_published_by_users(start=None, end=None, user=None, **filters):
         events = Event.objects.none()
         if user and hasattr(user, 'published_events'):
             events = user.published_events.all()()[start:end]
@@ -40,7 +40,7 @@ class EventService:
 
     
     @staticmethod
-    def get_favorite_events(start=0, end=10, user=None, **filters):
+    def get_favorite_events(start=None, end=None, user=None, **filters):
         events = Event.objects.none()
         if user and hasattr(user, 'favorite_events'):
             events = user.favorite_events.all()[start:end]
@@ -48,7 +48,7 @@ class EventService:
 
     
     @staticmethod
-    def get_event_participants(start=0, end=10, event=None, **filters):
+    def get_event_participants(start=None, end=None, event=None, **filters):
         participants = User.objects.none()
         if event and hasattr(event, 'participants'):
             participants = event.participants.all()[start:end]

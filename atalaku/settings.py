@@ -96,6 +96,9 @@ DATABASES = {
 	'PASSWORD': os.environ['ATALAKU_DATABASE_PW'],
 	'HOST'	:   os.environ['ATALAKU_DATABASE_HOST'] ,
 	'PORT' 	:   os.environ['ATALAKU_DATABASE_PORT'],
+    'OPTIONS' : {
+        'sslmode': 'require'
+    },
     'TEST'  :   {
         'NAME': 'test_db',
     },

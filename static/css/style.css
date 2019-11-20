@@ -67,12 +67,21 @@
 }
 
 .box{
-    /*background-color: #ccc;*/
+    display: flex;
+
     padding:16px 8px;
     margin: 16px 4px;
     text-align: center;
-    border: 2px solid #ccc;
-    font-size: 0.8em;
+    border: 1px solid #ccc;
+}
+.box .content{
+    display: flex;
+    width: 100%;
+    margin: 8px auto;
+    font-size: 1em;
+    align-items: baseline;
+    justify-content: start;
+    flex-direction: column;
 }
 
 .entry{
@@ -84,7 +93,7 @@
 
 .box .title{
     width: 100%;
-    font-size: 1em;
+    font-size: 1.5em;
     font-weight: bold;
     
 }
@@ -175,6 +184,28 @@
     
 }
 
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    margin : 8px auto;
+}
+
+.pagination .page{
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+}
+
+.pagination .disabled{
+    color: #ccc;
+}
+
+.pagination .active{
+    font-weight: bold;
+    color: #1976d2;
+}
+
 .messages{
     display: flex;
     position: relative;
@@ -189,6 +220,8 @@
     font-size: 1.2em;
     line-height: 16px;
     font-weight: 700;
+
+    min-height: 68px;
 
 }
 

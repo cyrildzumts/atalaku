@@ -49,7 +49,7 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     canceled_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
-    event_uuid = models.UUIDField(default=uuid.uuid4())
+    event_uuid = models.UUIDField(default=uuid.uuid4)
     slug = models.SlugField()
 
     def get_absolute_url(self):
@@ -71,7 +71,7 @@ class Event(models.Model):
 
 class EventTicket(models.Model):
     event = models.ForeignKey(Event, related_name="tickets", blank=True, null=True, on_delete=models.SET_NULL)
-    ticket_uuid = models.UUIDField(default=uuid.uuid4())
+    ticket_uuid = models.UUIDField(default=uuid.uuid4)
     ticket_code = models.CharField(max_length=32, blank=False, null=False)
     price = models.DecimalField(decimal_places=2, max_digits=10, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)

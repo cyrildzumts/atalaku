@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from events.models import Event, Category
 from events.forms import EventForm, EventCancelForm, CategoryForm, EventSearchForm
 from events.event_services import EventService, EventTicket
+from dashboard.permissions import get_view_permissions
 from django.utils.text import gettext_lazy as _
 import logging
 
@@ -32,6 +33,7 @@ def dashboard_home(request):
         'events': events,
         'page_title': page_title
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 # Create your views here.
@@ -51,6 +53,7 @@ def events(request):
         'events': events,
         'page_title': page_title
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 
@@ -62,6 +65,7 @@ def event_detail(request, event_uuid=None):
         'page_title': 'Event ' + event.name,
         'monitoring': EventService.event_summary(event_uuid)
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 
@@ -90,6 +94,7 @@ def event_update(request, event_uuid=None):
         'form' : form
 
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 @login_required
@@ -112,6 +117,7 @@ def event_create(request):
         'form' : EventForm()
 
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 @login_required
@@ -139,6 +145,7 @@ def event_search(request):
         'page_title' : page_title,
         'events' : None
     }
+    context.update(get_view_permissions(request.user))
     if request.method == 'POST':
         form = EventSearchForm(request.POST)
         if form.is_valid():
@@ -158,6 +165,7 @@ def event_category_events(request, category_slug=None):
         'category': category,
         'events' : events
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 
@@ -201,7 +209,7 @@ def create_event_category(request):
         'page_title' : _('Category Creation'),
         'form' : form,
     }
-
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 
@@ -223,6 +231,7 @@ def event_tickets(request):
         'ticket': tickets,
         'page_title': page_title
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 @login_required
@@ -235,4 +244,5 @@ def ticket_detail(request, ticket_uuid=None):
         'page_title': _('Ticket')
 
     }
+    context.update(get_view_permissions(request.user))
     return render(request, template_name, context)

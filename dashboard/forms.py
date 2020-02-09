@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import Group, Permission
-#from accounts.models import Account
+from accounts.models import Account
 from events.models import Event, Category, EventTicket
 
 

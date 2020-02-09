@@ -1,0 +1,21 @@
+{% extends "dashboard_base.html" %}
+{% load i18n %}
+
+{% block MAIN %}
+
+<div class="container">
+
+    <div class="row"><h4>{% trans "Create a new Event Category" %}</h4></div>
+    <form action="{% url 'dashboard:event-category-create' %}" method="post">{% csrf_token %}
+        <div class="form-group">
+            <input id="name" class="mat-input" type="text" name="name" required placeholder="{% trans 'Category name' %}" >
+        </div>
+        <div class="form-group">
+            <a class="mat-button mat-button-default" href="{% url 'dashboard:home' %}">{% trans "Cancel" %}</a>
+            <button type="submit" class="mat-button mat-button-default">{% trans "ADD CATEGORY" %}</button>
+        </div>
+        
+    </form>
+
+</div>
+{% endblock MAIN %} 

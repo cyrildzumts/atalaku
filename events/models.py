@@ -47,13 +47,17 @@ class Event(models.Model):
     is_active = models.BooleanField(default=True)
     taking_part = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    #created_by = models.ForeignKey(User, related_name='created_events', blank=True, null=True, on_delete=models.SET_NULL)
     canceled_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     event_uuid = models.UUIDField(default=uuid.uuid4)
     slug = models.SlugField()
-
+    
     def get_absolute_url(self):
-        return reverse("events:event-detail", kwargs={"pk": self.pk})
+        return reverse("events:event-detail", kwargs={"event_uuid": self.event_uuid})
+    
+    def get_dashboard_url(self):
+        return reverse("dashboard:event-detail", kwargs={"event_uuid": self.event_uuid})
     
     def __str__(self):
         return self.name
@@ -86,3 +90,15 @@ class EventTicket(models.Model):
             ('api_add_event_ticket', 'Can add event ticket through rest api'),
             ('api_delete_event_ticket', 'Can delete event ticket through rest api'),
         )
+
+    def __str__(self):
+        return self.ticket_code 
+    
+
+    def get_absolute_url(self):
+        return reverse("events:ticket-detail", kwargs={"ticket_uuid": self.ticket_uuid})
+    
+    def get_dashboard_url(self):
+        return reverse("dashboard:ticket-detail", kwargs={"ticket_uuid": self.ticket_uuid})
+
+    

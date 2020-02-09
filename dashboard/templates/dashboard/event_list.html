@@ -1,0 +1,34 @@
+{% extends "dashboard_base.html" %}
+{% load i18n %}
+
+{% block HEADER_BANNER %}
+<div class="banner">
+    <div class="grid">
+
+    </div>
+</div>
+<nav class="nav">
+    <ul class="nav-horizontal">
+     {% for category in categories %}
+        <li class="item"><a class="mat-button mat-button-text" href="{% url 'dashboard:category-events' category.slug %}">{% trans category.name %}</a></li>
+     {% endfor %}
+    </ul>
+</nav>
+{% endblock HEADER_BANNER %}
+
+
+{% block MAIN %}
+<div class="mat-box actions">
+ {% if can_add_event %}
+    <li><a class="mat-button mat-button-text" href="{% url 'dashboard:event-create' %}">{% trans "Add New Event" %}</a></li>
+ {% endif %}
+ {% if can_add_category %}
+    <li><a class="mat-button mat-button-text" href="{% url 'dashboard:event-category-create' %}">{% trans "Add New Category" %}</a></li>
+ {% endif %}
+
+</div>
+<div class="container">
+    {% include "tags/event_list_snippet.html" with events=events %}
+</div>
+
+{% endblock MAIN %}

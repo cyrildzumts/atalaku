@@ -1,0 +1,72 @@
+{% extends "dashboard_base.html" %}
+{% load i18n %}
+
+{% block HEADER_BANNER %}
+    <div class="banner banner-align-left">
+        <div class="container">
+            <div class="col col-9">
+                <div class="banner--content flex-column">
+                    <div class="row row-left"><span class="item"><h4>{{event.name}}</h4></span></div>
+                    <div class="row row-left subtitle"><span class="item"><i class="fas fa-map-marked"></i> <span>{{event.address}}</span></span></div>
+                    <div class="row row-left ">
+                            <span class="item"><i class="far fa-calendar-alt"></i> <span>{{event.when}}</span></span>
+                    </div>
+                    <div class="row row-left ">
+                            <span class="item"><i class="fas fa-map-marker-alt"></i> <span>{{event.where}} - </span>
+                            <span>{{event.country}}</span> - <span>{{event.city}}</span></span>
+                    </div>
+                    <div class="row row-left ">
+                        <span class="item"><i class="icon far fa-money-bill-alt"></i> <span>{% if event.entree_fee %}{{event.entree_fee}}{% else %}{% trans "Entree free" %}{% endif %}</span></span>
+                    </div>
+                    <div class="row row-left ">
+                        <span class="item"><i class="fas fa-user"></i> <span>{{event.organised_by}}</span></span>
+                    </div>
+                </div><!--End of Banner-Content-->
+                <div class="banner--actions">
+                    <a class="mat-button mat-button-outlined" href="{% url 'dashboard:event-delete'  event.event_uuid %}">{% trans "Delete" %}</a>
+                    <a class="mat-button mat-button-default" href="{% url 'dashboard:event-update'  event.event_uuid %}">{% trans "Update" %}</a>
+                </div><!--End of Banner-Actions-->
+            </div><!--End of Responsive-->
+        
+        </div><!--End of Container-->
+        
+    </div>
+{% endblock HEADER_BANNER %}
+
+{% block MAIN %}
+<div class="container">
+    <div class="row row-left">
+        <div class="col col-3">
+            <div class="row row-right">
+                <a class="mat-button mat-button-outlined" href="{% url 'dashboard:home' %}">{% trans "Dashboard" %}</a>
+            </div>
+        </div>
+        <div class="col col-9">
+            
+        </div>
+    </div>
+    <div class="mat-card">
+
+        <div class="mat-card--body">
+            <p>{{event.description}}</p>
+            
+        </div>
+        
+    </div>
+    <div class="box">
+        <table class="mat-table">
+            <tr>
+                <th>{% trans "Number of Participants" %}</th><th>{% trans "Number of Like" %}</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>{{monitoring.participants}}</td><td>{{monitoring.likes}}</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+{% endblock MAIN %} 

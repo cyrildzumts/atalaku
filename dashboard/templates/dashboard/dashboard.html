@@ -1,0 +1,16 @@
+{% extends "dashboard_base.html"%}
+{% load i18n %}
+{% if not can_access_dashboard %}
+{% include "tags/unauthorized.html" %}
+{% else %}
+
+{% block HEADER_BANNER %}
+
+{% endblock HEADER_BANNER %}
+
+{% block MAIN_CONTENT %}
+<div class="container row">
+        {% include "tags/event_list_snippet.html" with events=events %}
+</div>
+{% endblock MAIN_CONTENT %}
+{% endif %}

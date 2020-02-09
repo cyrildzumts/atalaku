@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class="search-wrapper">
+    <form action="{% url 'dashboard:event-search' %}" method="post"> {% csrf_token %}
+        <div class="form-group">
+            <input id="query" type="text" name="query" placeholder="{% trans 'Enter your search here'%}...">
+            <button class="mat-button mat-button-default" type="submit">{% trans "Search" %}</button>
+
+        </div>
+    </form>
+</div>

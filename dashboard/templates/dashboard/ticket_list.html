@@ -1,0 +1,30 @@
+{% extends "dashboard_base.html" %}
+{% load i18n %}
+
+{% block HEADER_BANNER %}
+<div class="banner">
+    <div class="grid">
+
+    </div>
+</div>
+<nav class="nav">
+    <ul class="nav-horizontal">
+     {% for category in categories %}
+        <li class="item"><a class="mat-button mat-button-text" href="{% url 'dashboard:category-events' category.slug %}">{% trans category.name %}</a></li>
+     {% endfor %}
+    </ul>
+</nav>
+{% endblock HEADER_BANNER %}
+
+
+{% block MAIN %}
+<div class="container">
+    <ul class="mat-list">
+        {% for ticket in tickets %}
+        <li class="mat-list-item"><a class="mat-button mat-button-text" href="{{ticket.get_dashboard_url}}"><span>{{ticket.code}}</span><i class="seperator-ht"></i><span>{{ticket.event.name}}</span> <span>{{ticket.created_at|date:"M j, Y"}}</span></a></li>
+        {% endfor %}
+    </ul>
+    {% include "tags/pagination.html" with page_set=tickets %}
+</div>
+
+{% endblock MAIN %}

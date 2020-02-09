@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div class="row">
-        <div class="col col-9">
+        <div class="col-m-12 col-9">
         <h3>{% trans "Events" %}</h3>
         {% for event in events %}
                 <div class="box row shadow">
@@ -31,12 +31,7 @@
                     </div><!--End of col-8-->
                     <div class="col-m-12 col-2">
                         <div class="actions">
-                            <span> <a class="mat-button mat-button-outlined" href="{% url 'events:event-detail' event.event_uuid %}">{% trans "Details" %}</a></span>
-                            {% if event.event_fee %}
-                                <span><a class="mat-button mat-button-default" href="#">{% trans "Buy Ticket" %}</a></span>
-                            {% else %}
-                                <span><a class="mat-button mat-button-default" href="{% url 'events:event-add-participant' event.event_uuid %}">{% trans "Add Me" %}</a></span>
-                            {% endif %}
+                            <span> <a class="mat-button mat-button-outlined" href="{% url 'dashboard:event-detail' event.event_uuid %}">{% trans "Details" %}</a></span>
                             
                         </div>
                     </div><!--End of col-2-->
@@ -49,7 +44,7 @@
             <p>{% trans "There is no events currently. You can revisite this page at a later time." %}</p>
         {% endfor %} 
 
-        {% include "tags/pagination.html" with page_set=events %} 
+        {% include "tags/pagination.html" %} 
         </div>
 
 </div>

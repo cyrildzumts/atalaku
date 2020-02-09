@@ -1,0 +1,52 @@
+{% extends "event_base.html" %}
+{% load i18n %}
+
+{% block HEADER_BANNER %}
+    <div class="banner banner-align-left">
+        <div class="container">
+            <div class="col col-9">
+                <div class="banner--content flex-column">
+                    <div class="row row-left"><span class="item"><h4>{{category.name}}</h4></span></div>
+                </div><!--End of Banner-Content-->
+                <div class="banner--actions">
+                     <a class="mat-button mat-button-default" href="{% url 'events:event-category-create' %}">{% trans "Add new category" %}</a>
+                </div><!--End of Banner-Actions-->
+            </div><!--End of Responsive-->
+        
+        </div><!--End of Container-->
+        <div class="box">
+            <div class="row filter">
+                <div class="country-filter">
+                    <select name="selected-country" id="selected-country">
+                    <option value="">{% trans "Country" %}</option>
+                    </select>
+                </div>
+                <div class="city-filter">
+                    <select name="selected-city" id="selected-city">
+                    <option value="">{% trans "City" %}</option>
+                    </select>
+                </div>
+                <div class="category-filter">
+                    <select name="selected-category" id="selected-category">
+                        <option value="{{category.pk}}">{{category.name}}</option>
+                    </select>
+                </div>
+                <div class="start-date-filter">
+                    <input type="text" placeholder="{% trans 'from' %}"> <span class="item"><i class="far fa-calendar-alt"></i></span>
+                </div>
+                <div class="end-date-filter">
+                    <input type="text" placeholder="{% trans 'to' %}"><span class="item"><i class="far fa-calendar-alt"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock HEADER_BANNER %}
+
+{% block MAIN %}
+<div class="container">
+    {% include "tags/event_list_snippet.html" with events=events %}
+    
+</div>
+
+</div>
+{% endblock MAIN %} 

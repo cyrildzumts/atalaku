@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.utils.text import slugify
-from events.models import Event, Category
+from django.utils.text import slugify, gettext_lazy as _
+from events.models import Event, Category, EventTicket
 from events.forms import EventForm, EventCancelForm, CategoryForm
 from django.db.models import F, Q
 import logging
@@ -19,6 +19,15 @@ class EventService:
         except Event.DoesNotExist as e:
             logger.error("No Event found with uuid {}", event_uuid)
         return event
+    
+    @staticmethod
+    def get_ticket(ticket_uuid=None):
+        ticket = None
+        try:
+            ticket = EventTicket.objects.get(ticket_uuid=ticket_uuid)
+        except EventTicket.DoesNotExist as e:
+            logger.error("No Event Ticket found with uuid {}", ticket_uuid)
+        return ticket
 
     @staticmethod
     def delete_event(event_uuid=None):
@@ -76,14 +85,14 @@ class EventService:
         if event and user and user.is_authenticated:
             if not EventService.is_event_participant(event, user):
                 event.participants.add(user)
-                message = "You have been added as participant to this Event"
+                message = _("You have been added as participant to this Event")
                 logger.info("The User {}  was added as participant to  the Event {}", user.get_full_name(), event.name)
                 added = True
             else:
-                message = "You are already a participant to this Event"
+                message = _("You are already a participant to this Event")
                 logger.warn("The User {} is participant to  the Event {}", user.get_full_name(), event.name)
         else:
-            message = "The Event was not found in this site"
+            message = _("The Event was not found in this site")
             logger.error("The Event {} was not found", event_uuid)
 
         return event, added, message

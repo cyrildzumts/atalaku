@@ -274,7 +274,8 @@ def event_detail(request, event_uuid=None):
         'event': event,
         'page_title': 'Event ' + event.name,
         'monitoring': EventService.event_summary(event_uuid)
-    }context['can_add_event'] = PermissionManager.user_can_add_event(request.user)
+    }
+    context['can_add_event'] = PermissionManager.user_can_add_event(request.user)
     context['can_delete_event'] = PermissionManager.user_can_delete_event(request.user)
     context['can_update_update'] = PermissionManager.user_can_change_event(request.user)
     context.update(get_view_permissions(request.user))context.update(get_view_permissions(request.user))

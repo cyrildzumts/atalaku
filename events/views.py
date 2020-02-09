@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import F, Q
 from events.models import Event, Category
 from events.forms import EventForm, EventCancelForm, CategoryForm, EventSearchForm, TicketForm
 from events.event_services import EventService
@@ -54,7 +55,9 @@ def events(request):
 
 
 def event_detail(request, event_uuid=None):
-    event = EventService.get_event(event_uuid)
+    event = get_object_or_404(Event, event_uuid=event_uuid)
+    Event.objects.filter(pk=event.pk).update(views_count=F('views_count') + 1)
+    event.refresh_from_db()
     template_name = 'events/event_detail.html'
     context = {
         'event': event,

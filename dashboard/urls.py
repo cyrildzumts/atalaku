@@ -19,6 +19,12 @@ urlpatterns = [
     path('event-search/<query>/', views.event_search, name='event-search'),
     path('event-add-participant/<uuid:event_uuid>/', views.event_add_participant, name='event-add-participant'),
     path('event-remove-participant/<uuid:event_uuid>/', views.event_remove_participant, name='event-remove-participant'),
+    path('generate-token/', views.generate_token, name='generate-token'),
+    path('groups/', views.groups, name='groups'),
+    path('groups/<int:pk>/', views.group_detail, name='group-detail'),
+    path('groups/group-create/', views.group_create, name='group-create'),
+    path('groups/group-delete/<int:pk>/', views.group_delete, name='group-delete'),
+    path('groups/group-update/<int:pk>/', views.group_update, name='group-update'),
     path('tickets/', views.event_tickets, name='tickets'),
     path('tickets/<uuid:ticket_uuid>', views.ticket_detail, name='ticket-detail'),
 ]

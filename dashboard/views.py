@@ -1,11 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
+from django.http import Http404
+from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import F, Q
+from rest_framework.authtoken.models import Token
+from dashboard import forms
 from events.models import Event, Category
 from events.forms import EventForm, EventCancelForm, CategoryForm, EventSearchForm
 from events.event_services import EventService, EventTicket
-from dashboard.permissions import get_view_permissions
+from atalaku import settings
+from dashboard.permissions import get_view_permissions, PermissionManager
 from django.utils.text import gettext_lazy as _
 import logging
 
@@ -246,3 +253,457 @@ def ticket_detail(request, ticket_uuid=None):
     }
     context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
+
+
+@login_required
+def users(request):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+    can_view_user = PermissionManager.user_can_view_user(request.user)
+    if not can_view_user:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = {}
+    queryset = User.objects.all()
+    template_name = "dashboard/user_list.html"
+    page_title = _("Dashboard Users") + " - " + settings.SITE_NAME
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, utils.PAGINATED_BY)
+    try:
+        list_set = paginator.page(page)
+    except PageNotAnInteger:
+        list_set = paginator.page(1)
+    except EmptyPage:
+        list_set = None
+    context['page_title'] = page_title
+    context['users'] = list_set
+    context['can_access_dashboard'] = can_access_dashboard
+    context.update(get_view_permissions(request.user))
+    context['can_delete'] = PermissionManager.user_can_delete_user(request.user)
+    context['can_update'] = PermissionManager.user_can_change_user(request.user)
+    return render(request,template_name, context)
+
+@login_required
+def user_details(request, pk=None):
+    username = request.user.username
+    if not PermissionManager.user_can_access_dashboard(request.user):
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+    if not PermissionManager.user_can_view_user(request.user):
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+    context = {}
+    #queryset = User.objects.select_related('account')
+    user = get_object_or_404(User, pk=pk)
+    template_name = "dashboard/user_detail.html"
+    page_title = "User Details - " + settings.SITE_NAME
+    context['page_title'] = page_title
+    context['user_instance'] = user
+    context.update(get_view_permissions(request.user))
+    context['can_delete'] = PermissionManager.user_can_delete_user(request.user)
+    context['can_update'] = PermissionManager.user_can_change_user(request.user)
+    return render(request,template_name, context)
+
+
+@login_required
+def generate_token(request):
+    username = request.user.username
+    can_view_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_view_dashboard :
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+    can_generate_token = PermissionManager.user_can_generate_token(request.user)
+    if not can_generate_token:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    template_name = "dashboard/token_generate.html"
+    context = {
+        'page_title' :_('User Token Generation') + ' - ' + settings.SITE_NAME,
+        'can_generate_token' : can_generate_token,
+    }
+    if request.method == 'POST':
+            form = forms.TokenForm(utils.get_postdata(request))
+            if form.is_valid():
+                user_id = form.cleaned_data['user']
+                username = form.cleaned_data['username']
+                user = User.objects.get(pk=user_id)
+                t = Token.objects.get_or_create(user=user)
+                context['generated_token'] = t
+                messages.add_message(request, messages.SUCCESS, _('Token successfully generated for user {}'.format(username)) )
+                return redirect('dashboard:home')
+            else :
+                messages.add_message(request, messages.ERROR, _('The submitted form is not valid') )
+    else :
+            context['form'] = forms.TokenForm()
+            context.update(get_view_permissions(request.user))
+        
+
+    return render(request, template_name, context)
+
+
+
+@login_required
+def groups(request):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_view_group = PermissionManager.user_can_view_group(request.user)
+    if not can_view_group:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = {}
+    
+    #current_account = Account.objects.get(user=request.user)
+    group_list = Group.objects.all()
+    template_name = "dashboard/group_list.html"
+    page_title = "Groups" + " - " + settings.SITE_NAME
+    page = request.GET.get('page', 1)
+    paginator = Paginator(group_list, utils.PAGINATED_BY)
+    try:
+        group_set = paginator.page(page)
+    except PageNotAnInteger:
+        group_set = paginator.page(1)
+    except EmptyPage:
+        group_set = None
+    context['page_title'] = page_title
+    context['groups'] = group_set
+    context['can_delete_group'] = PermissionManager.user_can_delete_group(request.user)
+    context['can_update_group'] = PermissionManager.user_can_change_group(request.user)
+    context['can_add_group'] = PermissionManager.user_can_add_group(request.user)
+    context.update(get_view_permissions(request.user))
+    return render(request,template_name, context)
+
+@login_required
+def group_detail(request, pk=None):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_view_group = PermissionManager.user_can_view_group(request.user)
+    if not can_view_group:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = {}
+    group = get_object_or_404(Group, pk=pk)
+    template_name = "dashboard/group_detail.html"
+    page_title = "Group Detail" + " - " + settings.SITE_NAME
+    context['page_title'] = page_title
+    context['group'] = group
+    context['can_delete_group'] = PermissionManager.user_can_delete_group(request.user)
+    context['can_update_group'] = PermissionManager.user_can_change_group(request.user)
+    context.update(get_view_permissions(request.user))
+    return render(request,template_name, context)
+
+
+@login_required
+def group_update(request, pk=None):
+    # TODO CHECK if the requesting User has the permission to update a group
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_change_group = PermissionManager.user_can_change_group(request.user)
+    if not can_change_group:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = None
+    page_title = 'Group Update'
+    template_name = 'dashboard/group_update.html'
+    group = get_object_or_404(Group, pk=pk)
+    form = forms.GroupFormCreation(instance=group)
+    group_users = group.user_set.all()
+    available_users = User.objects.exclude(pk__in=group_users.values_list('pk'))
+    permissions = group.permissions.all()
+    available_permissions = Permission.objects.exclude(pk__in=permissions.values_list('pk'))
+    if request.method == 'POST':
+        form = forms.GroupFormCreation(request.POST, instance=group)
+        users = request.POST.getlist('users')
+        if form.is_valid() :
+            logger.debug("Group form for update is valid")
+            if form.has_changed():
+                logger.debug("Group has changed")
+            group = form.save()
+            if users:
+                logger.debug("adding %s users [%s] into the group", len(users), users)
+                group.user_set.set(users)
+            logger.debug("Saved users into the group %s",users)
+            return redirect('dashboard:groups')
+        else :
+            logger.error("Error on editing the group. The form is invalid")
+    
+    context = {
+            'page_title' : page_title,
+            'form': form,
+            'group': group,
+            'users' : group_users,
+            'available_users' : available_users,
+            'permissions': permissions,
+            'available_permissions' : available_permissions,
+            'can_change_group' : can_change_group
+    }
+    context.update(get_view_permissions(request.user))
+    return render(request, template_name, context)
+
+
+@login_required
+def group_create(request):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_add_group = PermissionManager.user_can_add_group(request.user)
+    if not can_add_group:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = None
+    page_title = 'Group Creation'
+    template_name = 'dashboard/group_create.html'
+    available_permissions = Permission.objects.all()
+    available_users = User.objects.all()
+    form = forms.GroupFormCreation()
+    if request.method == 'POST':
+        form = forms.GroupFormCreation(request.POST)
+        users = request.POST.getlist('users')
+        if form.is_valid():
+            logger.debug("Group Create : Form is Valid")
+            group_name = form.cleaned_data.get('name', None)
+            logger.debug('Creating a Group with the name {}'.format(group_name))
+            if not Group.objects.filter(name=group_name).exists():
+                group = form.save()
+                messages.success(request, "The Group has been succesfully created")
+                if users:
+                    group.user_set.set(users)
+                    logger.debug("Added users into the group %s",users)
+                else :
+                    logger.debug("Group %s created without users", group_name)
+
+                return redirect('dashboard:groups')
+            else:
+                msg = "A Group with the given name {} already exists".format(group_name)
+                messages.error(request, msg)
+                logger.error(msg)
+            
+        else :
+            messages.error(request, "The Group could not be created. Please correct the form")
+            logger.error("Error on creating new Group Errors : %s", form.errors)
+    
+    context = {
+            'page_title' : page_title,
+            'form': form,
+            'available_users' : available_users,
+            'available_permissions': available_permissions,
+            'can_add_group' : can_add_group
+    }
+    context.update(get_view_permissions(request.user))
+    return render(request, template_name, context)
+
+
+@login_required
+def group_delete(request, pk=None):
+    # TODO Check if the user requesting the deletion has the Group Delete permission
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_delete_group = PermissionManager.user_can_delete_group(request.user)
+    if not can_delete_group:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+    try:
+        group = Group.objects.get(pk=pk)
+        name = group.name
+        messages.add_message(request, messages.SUCCESS, 'Group {} has been deleted'.format(name))
+        group.delete()
+        logger.debug("Group {} deleted by User {}", name, request.user.username)
+        
+    except Group.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Group could not be found. Group not deleted')
+        logger.error("Group Delete : Group not found. Action requested by User {}",request.user.username)
+        
+    return redirect('dashboard:groups')
+
+
+#######################################################
+########            Permissions 
+
+@login_required
+def permissions(request):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+
+    context = {}
+    permission_list = Permission.objects.all()
+    template_name = "dashboard/permission_list.html"
+    page_title = "Permissions" + " - " + settings.SITE_NAME
+    page = request.GET.get('page', 1)
+    paginator = Paginator(permission_list, utils.PAGINATED_BY)
+    try:
+        permission_set = paginator.page(page)
+    except PageNotAnInteger:
+        permission_set = paginator.page(1)
+    except EmptyPage:
+        permission_set = None
+    context['page_title'] = page_title
+    context['permissions'] = permission_set
+    context.update(get_view_permissions(request.user))
+    return render(request,template_name, context)
+
+@login_required
+def permission_detail(request, pk=None):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = {}
+    permission = get_object_or_404(Permission, pk=pk)
+    template_name = "dashboard/permission_detail.html"
+    page_title = "Permission Detail" + " - " + settings.SITE_NAME
+    context['page_title'] = page_title
+    context['permission'] = permission
+    context.update(get_view_permissions(request.user))
+    return render(request,template_name, context)
+
+
+@login_required
+def permission_update(request, pk=None):
+    # TODO CHECK if the requesting User has the permission to update a permission
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = None
+    page_title = 'Permission Update'
+    template_name = 'dashboard/permission_update.html'
+    permission = get_object_or_404(Permission, pk=pk)
+    form = forms.GroupFormCreation(instance=permission)
+    permission_users = permission.user_set.all()
+    available_users = User.objects.exclude(pk__in=permission_users.values_list('pk'))
+
+    if request.method == 'POST':
+        form = forms.GroupFormCreation(request.POST, instance=permission)
+        users = request.POST.getlist('users')
+        if form.is_valid() :
+            logger.debug("Permission form for update is valid")
+            if form.has_changed():
+                logger.debug("Permission has changed")
+            permission = form.save()
+            if users:
+                logger.debug("adding %s users [%s] into the permission", len(users), users)
+                permission.user_set.set(users)
+            logger.debug("Added permissions to users %s",users)
+            return redirect('dashboard:permissions')
+        else :
+            logger.error("Error on editing the perssion. The form is invalid")
+    
+    context = {
+            'page_title' : page_title,
+            'form': form,
+            'users' : permission_users,
+            'available_users' : available_users,
+            'permission': permission
+    }
+    context.update(get_view_permissions(request.user))
+    return render(request, template_name, context)
+
+
+@login_required
+def permission_create(request):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = None
+    page_title = 'Permission Creation'
+    template_name = 'dashboard/permission_create.html'
+    available_groups = Group.objects.all()
+    available_users = User.objects.all()
+    form = forms.GroupFormCreation()
+    if request.method == 'POST':
+        form = forms.GroupFormCreation(request.POST)
+        users = request.POST.getlist('users')
+        if form.is_valid():
+            logger.debug("Permission Create : Form is Valid")
+            perm_name = form.cleaned_data.get('name', None)
+            perm_codename = form.cleaned_data.get('codename', None)
+            logger.debug('Creating a Permission with the name {}'.format(perm_name))
+            if not Permission.objects.filter(Q(name=perm_name) | Q(codename=perm_codename)).exists():
+                perm = form.save()
+                messages.add_message(request, messages.SUCCESS, "The Permission has been succesfully created")
+                if users:
+                    perm.user_set.set(users)
+                    logger.debug("Permission %s given to users  %s",perm_name, users)
+                else :
+                    logger.debug("Permission %s created without users", perm_name)
+
+                return redirect('dashboard:permissions')
+            else:
+                msg = "A Permission with the given name {} already exists".format(perm_name)
+                messages.add_message(request, messages.ERROR, msg)
+                logger.error(msg)
+            
+        else :
+            messages.add_message(request, messages.ERROR, "The Permission could not be created. Please correct the form")
+            logger.error("Error on creating new Permission : %s", form.errors)
+    
+    context = {
+            'page_title' : page_title,
+            'form': form,
+            'available_users' : available_users,
+            'available_groups': available_groups
+    }
+    context.update(get_view_permissions(request.user))
+    return render(request, template_name, context)
+
+
+@login_required
+def permission_delete(request, pk=None):
+    # TODO Check if the user requesting the deletion has the Group Delete permission
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    try:
+        perm = Permission.objects.get(pk=pk)
+        name = perm.name
+        messages.add_message(request, messages.SUCCESS, 'Permission {} has been deleted'.format(name))
+        perm.delete()
+        logger.debug("Permission {} deleted by User {}", name, request.user.username)
+        
+    except Permission.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Permission could not be found. Permission not deleted')
+        logger.error("Permission Delete : Permission not found. Action requested by User {}",request.user.username)
+        raise Http404('Permission does not exist')
+        
+    return redirect('dashboard:permissions')

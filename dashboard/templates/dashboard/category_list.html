@@ -15,7 +15,8 @@
                 <div class="banner--actions">
                     {% if can_add_category %}
                     <a class="mat-button mat-button-outlined" href="{% url 'dashboard:category-create'%}"> {% trans "Add new Category" %}</a>{% endif %}
-                    {% if can_delete_category %}<a class="mat-button mat-button-default warn js-need-confirmation" href="{% url 'dashboard:category-service-remove-all' %}"> {% trans "Delete All Service Categories" %} </a>{% endif %}
+                    {% comment %}{% if can_delete_category %}<a class="mat-button mat-button-default warn js-need-confirmation" href="{% url 'dashboard:category-service-remove-all' %}"> {% trans "Delete All Service Categories" %} </a>{% endif %}
+                    {% endcomment %}
                     <a class="mat-button mat-button-text" href="{% url 'dashboard:home' %}"> {% trans "Dashboard" %} </a>
           
                 </div><!--End of Banner-Actions-->

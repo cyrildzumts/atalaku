@@ -206,33 +206,33 @@ def create_event_category(request):
 
 
 
-    @login_required
-    def event_tickets(request):
-        ticket_list = EventTicket.get_events()
-        page = request.GET.get('page', 1)
-        paginator = Paginator(ticket_list, 1)
-        try:
-            tickets = paginator.page(page)
-        except PageNotAnInteger:
-            tickets = paginator.page(1)
-        except EmptyPage:
-            events = paginator.page(paginator.num_pages)
-        page_title = _('Tickets')
-        template_name = 'dashboard/ticket_list.html'
-        context = {
-            'ticket': tickets,
-            'page_title': page_title
-        }
-        return render(request, template_name, context)
+@login_required
+def event_tickets(request):
+    ticket_list = EventTicket.get_events()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(ticket_list, 1)
+    try:
+        tickets = paginator.page(page)
+    except PageNotAnInteger:
+        tickets = paginator.page(1)
+    except EmptyPage:
+        events = paginator.page(paginator.num_pages)
+    page_title = _('Tickets')
+    template_name = 'dashboard/ticket_list.html'
+    context = {
+        'ticket': tickets,
+        'page_title': page_title
+    }
+    return render(request, template_name, context)
 
-    @login_required
-    def ticket_detail(request, ticket_uuid=None):
-        ticket = EventService.get_ticket(ticket_uuid)
-        template_name = 'dashboard/ticket_detail.html'
-        context = {
-            'ticket': ticket,
-            'event' : ticket.event,
-            'page_title': _('Ticket')
- 
-        }
-        return render(request, template_name, context)
+@login_required
+def ticket_detail(request, ticket_uuid=None):
+    ticket = EventService.get_ticket(ticket_uuid)
+    template_name = 'dashboard/ticket_detail.html'
+    context = {
+        'ticket': ticket,
+        'event' : ticket.event,
+        'page_title': _('Ticket')
+
+    }
+    return render(request, template_name, context)

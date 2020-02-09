@@ -6,7 +6,7 @@ app_name = 'dashboard'
 
 urlpatterns = [
     path('', views.dashboard_home, name='home'),
-    path('home/', views.event_home, name='home'),
+    path('home/', views.dashboard_home, name='home'),
     path('events/', views.events, name='events'),
     path('events/event-create/', views.event_create, name='event-create'),
     path('events/<category_slug>/', views.event_category_events, name='category-events'),

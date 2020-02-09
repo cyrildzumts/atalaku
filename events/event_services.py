@@ -171,7 +171,8 @@ class EventService:
                 data = form.cleaned_data
             else:
                 logger.error("EventForm data is not valid")
-                logger.error('EventForm Errors : {}', form.errors)
+                logger.error('EventForm Errors : %s\n', form.errors)
+                logger.error('EventForm Non Field Errors : %s\n', form.non_field_errors)
         return data
 
     @staticmethod

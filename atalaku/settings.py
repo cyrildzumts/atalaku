@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'accounts',
     'events.apps.EventsConfig',
+    'dashboard.apps.DashboardConfig',
 ]
 
 MIDDLEWARE = [

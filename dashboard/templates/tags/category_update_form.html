@@ -1,0 +1,39 @@
+{% load i18n %} 
+
+
+{% if can_change_category %}
+
+
+<div class="responsive">
+
+    <div class="card">
+        <div class="card__title">
+            <h1>{% trans "Edit Category" %}</h1>
+        </div>
+        <div class="card__body">
+        
+        
+                <form class="form card" name="category" action="{{category.get_dashboard_update_url}}" method="POST">{% csrf_token %}
+                    <div class="card__body">
+                    
+                        <div class="form-group">
+                            <label for="name">{% trans "Category Name" %}</label>
+                            <input id="name" type="text"  name="name" value="{{category.name}}">
+                        </div>
+                    
+                    </div><!-- End of Card-body-->
+
+                    <div class="card__actions">
+                            <a class="mat-button mat-button-text js-cancel" href="{% url 'dashboard:home' %}">{% trans "Cancel" %}</a>
+                            <button class="mat-button mat-button-default" type="submit">{% trans "Update" %}</button>
+                    </div>
+                    
+                </form>
+            </div>
+    </div>          
+</div>
+{% else %}
+<div class="access-error">
+  <p>{% trans "The page you requested could not be found or you are not allowed to access this page." %}</p>
+</div>
+{% endif %}

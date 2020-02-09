@@ -43,6 +43,204 @@ def dashboard_home(request):
     context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
+@login_required
+def categories(request):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_view_category = PermissionManager.user_can_view_category(request.user)
+    if not can_view_category:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = {}
+    queryset = Category.objects.all()
+    template_name = "dashboard/category_list.html"
+    page_title = "Categories" + ' - ' + settings.SITE_NAME
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, utils.PAGINATED_BY)
+    try:
+        list_set = paginator.page(page)
+    except PageNotAnInteger:
+        list_set = paginator.page(1)
+    except EmptyPage:
+        list_set = None
+    context['page_title'] = page_title
+    context['categories'] = list_set
+    context.update(get_view_permissions(request.user))
+    context['can_add_category'] = PermissionManager.user_can_add_category(request.user)
+    context['can_delete_category'] = PermissionManager.user_can_delete_category(request.user)
+    context['can_update_category'] = PermissionManager.user_can_change_category(request.user)
+    return render(request,template_name, context)
+
+
+@login_required
+def category_update(request, category_uuid=None):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_change_category = PermissionManager.user_can_change_category(request.user)
+    if not can_change_category:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    page_title = _("Edit Category")+ ' | ' + settings.SITE_NAME
+    instance = get_object_or_404(Category, category_uuid=category_uuid)
+    template_name = "dashboard/category_update.html"
+    if request.method =="POST":
+        form = CategoryForm(request.POST, instance=instance)
+        if form.is_valid():
+            logger.info("CategoryForm for instance %s is valid", form.cleaned_data['name'])
+            instance = form.save()
+            return redirect(instance.get_dashboard_url())
+        else:
+            logger.info("Edit CategoryForm is not valid. Errors : %s", form.errors)
+    
+    form = CategoryForm(instance=instance)
+    context = {
+            'page_title':page_title,
+            'template_name':template_name,
+            'category' : instance,
+            'form': form,
+            'can_update_category' : can_change_category
+        }
+    context.update(get_view_permissions(request.user))
+    return render(request, template_name,context )
+
+
+
+
+@login_required
+def category_remove(request, category_uuid=None):
+    # TODO Check if the user requesting the deletion has the permission
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_delete_category = PermissionManager.user_can_delete_category(request.user)
+    if not can_delete_category:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    deleted_count, extras = Category.objects.filter(category_uuid=category_uuid).delete()
+    if deleted_count > 0 :
+        messages.add_message(request, messages.SUCCESS, 'Service Category has been deleted')
+        logger.debug("Service Category deleted by User {}", request.user.username)
+    
+    else:
+        messages.add_message(request, messages.ERROR, 'Service Category could not be deleted')
+        logger.error("Service Category Delete failed. Action requested by User {}",request.user.username)
+        
+    return redirect('dashboard:category-services')
+
+
+@login_required
+def category_remove_all(request):
+    # TODO Check if the user requesting the deletion has the permission
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_delete_category = PermissionManager.user_can_delete_category(request.user)
+    if not can_delete_category:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    deleted_count, extras = Category.objects.all().delete()
+    if deleted_count > 0 :
+        messages.add_message(request, messages.SUCCESS, 'All Category has been deleted')
+        logger.debug("All Category deleted by User {}", request.user.username)
+    
+    else:
+        messages.add_message(request, messages.ERROR, 'All Category could not be deleted')
+        logger.error("All Category Delete failed. Action requested by User {}",request.user.username)
+        
+    return redirect('dashboard:home')
+
+
+@login_required
+def category_create(request):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_add_category = PermissionManager.user_can_add_category(request.user)
+    if not can_add_category:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    page_title = _("Create Category")+ ' | ' + settings.SITE_NAME
+    template_name = "dashboard/category_create.html"
+    form = None
+    if request.method =="POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            logger.info("CategoryForm for instance %s is valid", form.cleaned_data['name'])
+            name = form.cleaned_data['name']
+            category = EventService.create_category(name)
+            if category:
+                return redirect(category.get_dashboard_url())
+        else:
+            form = CategoryForm()
+            logger.info("Edit CategoryForm is not valid. Errors : %s", form.errors)
+    elif request.method == "GET":
+        form = CategoryForm()
+
+    context = {
+            'page_title':page_title,
+            'template_name':template_name,
+            'form': form,
+            'can_add_category' : can_add_category
+        }
+    context.update(get_view_permissions(request.user))
+    
+    return render(request, template_name,context )
+
+
+
+@login_required
+def category_detail(request, category_uuid=None):
+    username = request.user.username
+    can_access_dashboard = PermissionManager.user_can_access_dashboard(request.user)
+    if not can_access_dashboard:
+        logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    can_view_category = PermissionManager.user_can_view_category(request.user)
+    if not can_view_category:
+        logger.warning("PermissionDenied to user %s for path %s", username, request.path)
+        raise PermissionDenied
+
+    context = {}
+    category = get_object_or_404(Category, category_uuid=category_uuid)
+    events = Event.objects.filter(category=category)
+    template_name = "dashboard/category_detail.html"
+    page_title = "Service Category Details - " + settings.SITE_NAME
+    context['page_title'] = page_title
+    context['category'] = category
+    context['has_content'] = events.exists()
+    context['events'] = events
+    context.update(get_view_permissions(request.user))
+    context['can_add_category'] = PermissionManager.user_can_add_category(request.user)
+    context['can_delete_category'] = PermissionManager.user_can_delete_category(request.user)
+    context['can_update_category'] = PermissionManager.user_can_change_category(request.user)
+    return render(request,template_name, context)
+
+
+
+
 # Create your views here.
 def events(request):
     event_list = EventService.get_events()
@@ -196,29 +394,6 @@ def event_remove_participant(request, event_uuid=None):
         messages.error(request, message)
     
     return redirect('dashboard:event-detail', event_uuid=event.event_uuid)
-
-
-@login_required
-def create_event_category(request):
-    form = None
-    if request.method == 'POST':
-        form = CategoryForm(request.POST.copy())
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            category = EventService.create_category(name)
-            if category:
-                return redirect('dashboard:home')
-
-    if request.method == 'GET':
-        form = CategoryForm()
-    template_name = 'dashboard/create_category.html'
-    context = {
-        'page_title' : _('Category Creation'),
-        'form' : form,
-    }
-    context.update(get_view_permissions(request.user))
-    return render(request, template_name, context)
-
 
 
 @login_required

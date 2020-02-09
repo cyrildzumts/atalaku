@@ -14,10 +14,17 @@ class Category(models.Model):
     slug = models.SlugField()
     views_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    category_uuid = models.UUIDField(default=uuid.uuid4)
 
     def get_absolute_url(self):
         return reverse("events:category-detail", kwargs={"pk": self.pk})
     
+    def get_dashboard_url(self):
+        return reverse("dashboard:category-detail", kwargs={"category_uuid": self.category_uuid})
+
+        def get_dashboard_update_url(self):
+        return reverse("dashboard:category-update", kwargs={"category_uuid": self.category_uuid})
+
     def __str__(self):
         return self.name
 
@@ -58,6 +65,9 @@ class Event(models.Model):
     
     def get_dashboard_url(self):
         return reverse("dashboard:event-detail", kwargs={"event_uuid": self.event_uuid})
+
+    def get_dashboard_update_url(self):
+        return reverse("dashboard:event-update", kwargs={"event_uuid": self.event_uuid})
     
     def __str__(self):
         return self.name

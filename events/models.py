@@ -22,7 +22,7 @@ class Category(models.Model):
     def get_dashboard_url(self):
         return reverse("dashboard:category-detail", kwargs={"category_uuid": self.category_uuid})
 
-        def get_dashboard_update_url(self):
+    def get_dashboard_update_url(self):
         return reverse("dashboard:category-update", kwargs={"category_uuid": self.category_uuid})
 
     def __str__(self):

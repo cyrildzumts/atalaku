@@ -242,6 +242,7 @@ def category_detail(request, category_uuid=None):
 
 
 # Create your views here.
+@login_required
 def events(request):
     event_list = EventService.get_events()
     page = request.GET.get('page', 1)
@@ -258,10 +259,14 @@ def events(request):
         'events': events,
         'page_title': page_title
     }
+
+    context['can_add_event'] = PermissionManager.user_can_add_event(request.user)
+    context['can_delete_event'] = PermissionManager.user_can_delete_event(request.user)
+    context['can_update_update'] = PermissionManager.user_can_change_event(request.user)
     context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
-
+@login_required
 def event_detail(request, event_uuid=None):
     event = EventService.get_event(event_uuid)
     template_name = 'dashboard/event_detail.html'
@@ -269,8 +274,10 @@ def event_detail(request, event_uuid=None):
         'event': event,
         'page_title': 'Event ' + event.name,
         'monitoring': EventService.event_summary(event_uuid)
-    }
-    context.update(get_view_permissions(request.user))
+    }context['can_add_event'] = PermissionManager.user_can_add_event(request.user)
+    context['can_delete_event'] = PermissionManager.user_can_delete_event(request.user)
+    context['can_update_update'] = PermissionManager.user_can_change_event(request.user)
+    context.update(get_view_permissions(request.user))context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 
 
@@ -299,6 +306,9 @@ def event_update(request, event_uuid=None):
         'form' : form
 
     }
+    context['can_add_event'] = PermissionManager.user_can_add_event(request.user)
+    context['can_delete_event'] = PermissionManager.user_can_delete_event(request.user)
+    context['can_update_update'] = PermissionManager.user_can_change_event(request.user)
     context.update(get_view_permissions(request.user))
     return render(request, template_name, context)
 

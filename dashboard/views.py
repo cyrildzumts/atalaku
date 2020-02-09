@@ -61,7 +61,7 @@ def categories(request):
     template_name = "dashboard/category_list.html"
     page_title = "Categories" + ' - ' + settings.SITE_NAME
     page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, utils.PAGINATED_BY)
+    paginator = Paginator(queryset, settings.PAGINATED_BY)
     try:
         list_set = paginator.page(page)
     except PageNotAnInteger:
@@ -447,7 +447,7 @@ def users(request):
     template_name = "dashboard/user_list.html"
     page_title = _("Dashboard Users") + " - " + settings.SITE_NAME
     page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, utils.PAGINATED_BY)
+    paginator = Paginator(queryset, settings.PAGINATED_BY)
     try:
         list_set = paginator.page(page)
     except PageNotAnInteger:
@@ -501,7 +501,7 @@ def tokens(request):
     template_name = "dashboard/token_list.html"
     page_title = _("Dashboard Users Tokens") + " - " + settings.SITE_NAME
     page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, utils.PAGINATED_BY)
+    paginator = Paginator(queryset, settings.PAGINATED_BY)
     try:
         list_set = paginator.page(page)
     except PageNotAnInteger:
@@ -532,7 +532,7 @@ def generate_token(request):
         'can_generate_token' : can_generate_token,
     }
     if request.method == 'POST':
-            form = forms.TokenForm(utils.get_postdata(request))
+            form = forms.TokenForm(request.POST.copy())
             if form.is_valid():
                 user_id = form.cleaned_data['user']
                 username = form.cleaned_data['username']
@@ -572,7 +572,7 @@ def groups(request):
     template_name = "dashboard/group_list.html"
     page_title = "Groups" + " - " + settings.SITE_NAME
     page = request.GET.get('page', 1)
-    paginator = Paginator(group_list, utils.PAGINATED_BY)
+    paginator = Paginator(group_list, settings.PAGINATED_BY)
     try:
         group_set = paginator.page(page)
     except PageNotAnInteger:
@@ -765,7 +765,7 @@ def permissions(request):
     template_name = "dashboard/permission_list.html"
     page_title = "Permissions" + " - " + settings.SITE_NAME
     page = request.GET.get('page', 1)
-    paginator = Paginator(permission_list, utils.PAGINATED_BY)
+    paginator = Paginator(permission_list, settings.PAGINATED_BY)
     try:
         permission_set = paginator.page(page)
     except PageNotAnInteger:

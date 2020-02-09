@@ -27,6 +27,7 @@ SECRET_KEY = os.environ['ATALAKU_SECRET_KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','http://atalaku.com', 'www.atalaku.com','atalaku.com', os.environ['ATALAKU_ALLOWED_HOST']]
+PAGINATED_BY = 10
 
 SITE_NAME = os.environ['ATALAKU_SITE_NAME']
 META_KEYWORDS = "Event,Events, Africa, Africans, Africains, Evènement, Publicité, publication, party, fête,anniversaire"

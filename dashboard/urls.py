@@ -27,4 +27,6 @@ urlpatterns = [
     path('groups/group-update/<int:pk>/', views.group_update, name='group-update'),
     path('tickets/', views.event_tickets, name='tickets'),
     path('tickets/<uuid:ticket_uuid>', views.ticket_detail, name='ticket-detail'),
+    path('users/', views.users, name='users'),
+    path('userss/<int:pk>/', views.user_detail, name='user-detail'),
 ]

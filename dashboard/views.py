@@ -288,7 +288,7 @@ def users(request):
     return render(request,template_name, context)
 
 @login_required
-def user_details(request, pk=None):
+def user_detail(request, pk=None):
     username = request.user.username
     if not PermissionManager.user_can_access_dashboard(request.user):
         logger.warning("Dashboard : PermissionDenied to user %s for path %s", username, request.path)

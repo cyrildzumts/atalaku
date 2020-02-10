@@ -62,6 +62,8 @@ def event_detail(request, event_uuid=None):
     context = {
         'event': event,
         'page_title': 'Event ' + event.name,
+        'is_taking_part' : EventService.is_event_participant(event,request.user),
+        'is_favorite' : EventService.is_favorite_event(event, request.user),
         'monitoring': EventService.event_summary(event_uuid)
     }
     return render(request, template_name, context)

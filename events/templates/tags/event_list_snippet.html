@@ -5,7 +5,7 @@
         <h3>{% trans "Events" %}</h3>
         {% for event in events %}
                 
-                <div class="mat-box">
+                <div class="mat-box row">
                     <div class="col-m-12 col-2">
                         {% if event.image %}
                         <div class="img">
@@ -32,8 +32,8 @@
                     </div><!--End of col-8-->
                     <div class="col-m-12 col-2">
                         <div class="actions">
-                            {% if event.event_fee %}
-                                <div><span class="mat-button mat-button-text">{{event.event_fee}}</span><span>{% trans "XAF" %}</span></div>
+                            {% if event.entree_fee %}
+                                <div><span class="mat-button mat-button-text">{{event.entree_fee}}</span><span>{% trans "XAF" %}</span></div>
                             {% else %}
                                 <div><span class="mat-button mat-button-text">{% trans "Free" %}</span></div>
                             {% endif %}

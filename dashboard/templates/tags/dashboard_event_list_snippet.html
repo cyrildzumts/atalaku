@@ -32,11 +32,11 @@
                     <div class="col-m-12 col-2">
                         <div class="actions">
                             {% if event.entree_fee %}
-                                <div><span class="mat-button mat-button-text">{{event.entree_fee}}</span><span>{% trans "XAF" %}</span></div>
+                                <div class="mat-button mat-button-text"><span>{{event.entree_fee}}</span><span>{% trans "XAF" %}</span></div>
                             {% else %}
-                                <div><span class="mat-button mat-button-text">{% trans "Free" %}</span></div>
+                                <div class="mat-button mat-button-text"><span >{% trans "Free" %}</span></div>
                             {% endif %}
-                            <div><span> <a class="mat-button mat-button-outlined" href="{% url 'dashboard:event-detail' event.event_uuid %}">{% trans "Details" %}</a></span></div>
+                            <div><a class="mat-button mat-button-outlined" href="{% url 'dashboard:event-detail' event.event_uuid %}">{% trans "Details" %}</a></div>
                         </div>
                     </div><!--End of col-2-->
                     

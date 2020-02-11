@@ -59,19 +59,7 @@
             <p>{{event.description}}</p> 
         </div>
         <div class="mat-card--footer">
-            {% if is_favorite %}
-            <a class="mat-button mat-button-outlined" href="{% url 'events:event-unlike' event.event_uuid %}">{% trans "UNLIKE" %}</a>
-            {% else %}<a class="mat-button mat-button-outlined" href="{% url 'events:event-like' event.event_uuid %}">{% trans "LIKE" %}</a>{% endif %}
-            <span>
-            {% if event.entree_fee %}
-            <a class="mat-button mat-button-default" href="{% url 'events:event-buy-ticket'  event.event_uuid %}">{% trans "Buy Ticket" %}</a>
-            {% endif %}</span>
-            {% if is_taking_part %}
-            <a class="mat-button mat-button-default" href="{% url 'events:event-remove-participant'  event.event_uuid %}">{% trans "Cancled Participation" %}</a>
             
-            {% else %}
-            <a class="mat-button mat-button-default" href="{% url 'events:event-add-participant'  event.event_uuid %}">{% trans "I will be there" %}</a>
-            {% endif %}
         </div>
     </div>
     <div class="mat-box">

@@ -4,7 +4,7 @@
         <div class="col-m-12 col-9">
         <h3>{% trans "Events" %}</h3>
         {% for event in events %}
-                <a href="{{event.get_absolute_url}}">
+                <a class="container" href="{{event.get_absolute_url}}">
                 <div class="mat-box">
                     <div class="col-m-12 col-2">
                         {% if event.image %}
@@ -35,9 +35,9 @@
                             {% comment %}<span> <a class="mat-button mat-button-outlined" href="{% url 'events:event-detail' event.event_uuid %}">{% trans "Details" %}</a></span>
                             {% endcomment %}
                             {% if event.event_fee %}
-                                <span><a class="mat-button mat-button-default" href="#">{% trans "Buy Ticket" %}</a></span>
+                                <div><span class="mat-button mat-button-text">{{event.event_fee}}</span><span>{% trans "XAF" %}</span></div>
                             {% else %}
-                                <span><a class="mat-button mat-button-default" href="{% url 'events:event-add-participant' event.event_uuid %}">{% trans "Add Me" %}</a></span>
+                                <div><span class="mat-button mat-button-text">{% trans "Free" %}</span></div>
                             {% endif %}
                             
                         </div>

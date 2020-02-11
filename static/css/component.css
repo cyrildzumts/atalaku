@@ -48,21 +48,36 @@
 .bordered{
   border: 1px solid #ccc;
 }
+
+.space{
+	margin: 4px;
+}
+
+.space-ht{
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.space-vt{
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
 .separator-ht{
-	margin: 0 16px;
+	margin: 0 4px;
 }
 
 .separator-vt{
-	margin: 16px 0;
+	margin: 4px 0;
 }
 
 .separator{
-	margin: 16px;
+	margin: 4px;
 }
 
 .separator-ht::after, .separator-vt::after, .separator::after{
 	content: "-";
-	padding: 0 16px;
+	padding: 0 4px;
 }
 
 .state{

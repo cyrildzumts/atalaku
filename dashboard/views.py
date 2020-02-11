@@ -412,7 +412,7 @@ def event_remove_participant(request, event_uuid=None):
 
 @login_required
 def event_tickets(request):
-    ticket_list = EventTicket.get_events()
+    ticket_list = EventTicket.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(ticket_list, 1)
     try:
@@ -424,7 +424,7 @@ def event_tickets(request):
     page_title = _('Tickets')
     template_name = 'dashboard/ticket_list.html'
     context = {
-        'ticket': tickets,
+        'ticket_list': tickets,
         'page_title': page_title
     }
     context.update(get_view_permissions(request.user))

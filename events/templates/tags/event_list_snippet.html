@@ -1,10 +1,11 @@
 {% load i18n %}
 
 <div class="row">
-        <div class="col col-9">
+        <div class="col-m-12 col-9">
         <h3>{% trans "Events" %}</h3>
         {% for event in events %}
-                <div class="box row shadow">
+                <a href="{{event.get_absolute_url}}">
+                <div class="mat-box">
                     <div class="col-m-12 col-2">
                         {% if event.image %}
                         <div class="img">
@@ -31,7 +32,8 @@
                     </div><!--End of col-8-->
                     <div class="col-m-12 col-2">
                         <div class="actions">
-                            <span> <a class="mat-button mat-button-outlined" href="{% url 'events:event-detail' event.event_uuid %}">{% trans "Details" %}</a></span>
+                            {% comment %}<span> <a class="mat-button mat-button-outlined" href="{% url 'events:event-detail' event.event_uuid %}">{% trans "Details" %}</a></span>
+                            {% endcomment %}
                             {% if event.event_fee %}
                                 <span><a class="mat-button mat-button-default" href="#">{% trans "Buy Ticket" %}</a></span>
                             {% else %}
@@ -41,9 +43,8 @@
                         </div>
                     </div><!--End of col-2-->
                     
-                
-                    
-                </div>
+                </div><!--End of box-->
+                </a>
         
         {% empty %}
             <p>{% trans "There is no events currently. You can revisite this page at a later time." %}</p>

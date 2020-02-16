@@ -135,8 +135,11 @@ class EventTicket(models.Model):
         return reverse("dashboard:ticket-detail", kwargs={"ticket_uuid": self.ticket_uuid})
 
 
+
+
 class PaymentRequest(models.Model):
     token = models.CharField(blank=True, null=True)
+    verification_code = models.TextField(max_length=80, blank=True, null=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE ,blank=False )
     amount = models.DecimalField(decimal_places=2)
     unit_price = models.IntegerField(blank=True, null=True)

@@ -4,6 +4,29 @@ from django.urls import reverse
 import uuid
 # Create your models here.
 
+PR_ACTIVE           = 'Active'
+PR_CANCELED         = 'Canceled'
+PR_CLEARED          = 'Cleared'
+PR_ACCEPTED         = 'Accepted'
+PR_CREATED          = 'Created'
+PR_COMPLETED        = 'Completed'
+PR_DECLINED         = 'Declined'
+PR_EXPIRED          = 'Expired'
+PR_FAILED           = 'Failed'
+PR_PAID             = 'Paid'
+PR_PROCESSED        = 'Processed'
+PR_PENDING          = 'Pending'
+PR_REFUSED          = 'Refused'
+PR_REVERSED         = 'Reversed'
+
+PR_STATUS = [
+    PR_ACCEPTED,PR_ACTIVE, PR_CANCELED, PR_CLEARED,
+    PR_COMPLETED, PR_CREATED, PR_DECLINED, PR_EXPIRED,
+    PR_FAILED, PR_PAID, PR_PENDING, PR_PROCESSED, 
+    PR_REFUSED, PR_REVERSED
+]
+
+
 def event_file_path(instance, filename):
     file_ext = filename.split(".")[-1]
     name = instance.name + "." + file_ext
@@ -111,4 +134,20 @@ class EventTicket(models.Model):
     def get_dashboard_url(self):
         return reverse("dashboard:ticket-detail", kwargs={"ticket_uuid": self.ticket_uuid})
 
-    
+
+class PaymentRequest(models.Model):
+    token = models.CharField(blank=True, null=True)
+    seller = models.ForeignKey(User, on_delete=models.CASCADE ,blank=False )
+    amount = models.DecimalField(decimal_places=2)
+    unit_price = models.IntegerField(blank=True, null=True)
+    quantity = models.IntegerField(default=1, blank=True, null=True)
+    tva = models.DecimalField(decimal_places=3, blank=True, null=True)
+    commission = models.DecimalField(decimal_places=3, blank=True, null=True)
+    country = models.CharField(max_length=32, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(default=PR_CREATED, blank=False, null=False)
+    product_name = models.CharField(max_length=255 ,blank=False, null=False)
+    customer_name = product_name = models.CharField(max_length=255 ,blank=False, null=False)
+    description = models.CharField(max_length=255 ,blank=False, null=False)
+

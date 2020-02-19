@@ -42,16 +42,18 @@
     <div class="responsive">
         <form action="{% url 'events:event-buy-ticket' event.event_uuid %}" method="post">{% csrf_token %}
             <div clas="form-group">
-                <input type="hidden"  name="event" value="{{event.pk}}" >
+                <input id="event" type="hidden"  name="event" value="{{event.pk}}" >
             </div>
             <div clas="form-group">
-                <input type="hidden"  name="buyer" value="{{user.pk}}" >
+                <input id="buyer" type="hidden"  name="buyer" value="{{user.pk}}" >
             </div>
             <div clas="form-group">
-                <input type="text"  name="name" value="{{event.name}}" disabled>
+                <label for="name">{% trans 'Event' %} : </label>
+                <input id="name" type="text"  name="name" value="{{event.name}}" disabled>
             </div>
             <div clas="form-group">
-                <input type="text"  name="price" value="{{event.entry_fee}}" disabled>
+                <label for="price">{% trans 'Price' %} : </label>
+                <input id="price" type="text"  name="price" value="{{event.entree_fee}}" disabled>
             </div>
             <div class="form-group">
                 <a class="mat-button mat-button-outlined warn" href="{% url 'events:event-home'%}">{% trans "Cancel" %}</a>

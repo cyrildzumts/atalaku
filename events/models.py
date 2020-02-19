@@ -109,11 +109,11 @@ class Event(models.Model):
 class EventTicket(models.Model):
     event = models.ForeignKey(Event, related_name="tickets", blank=True, null=True, on_delete=models.SET_NULL)
     ticket_uuid = models.UUIDField(default=uuid.uuid4)
-    ticket_code = models.CharField(max_length=32, blank=False, null=False)
+    ticket_code = models.CharField(max_length=32, blank=True, null=False)
     price = models.DecimalField(decimal_places=2, max_digits=10, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     buyer = models.ForeignKey(User, related_name="buyed_tickets", blank=True, null=True, on_delete=models.SET_NULL)
-    cancel_delai = models.IntegerField(default=0)
+    cancel_delai = models.IntegerField(default=0, blank=True, null=True)
     canceled_at = models.DateTimeField(blank=True, null=True)
     
     class Meta:

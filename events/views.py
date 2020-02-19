@@ -152,6 +152,10 @@ def event_buy_ticket(request, event_uuid=None):
     logger.debug("Event Ticket Buy View - Event %s", event_uuid)
     if request.method == 'POST':
         form = TicketForm(request.POST)
+        if form.is_valid():
+            logger.info('EventTicket form is Valid')
+        else:
+            logger.error('EventTicket form is not valid : ', form.errors)
     elif request.method == 'GET':
         pass
     

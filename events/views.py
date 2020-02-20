@@ -7,6 +7,7 @@ from django.db.models import F, Q
 from events.models import Event, Category
 from events.forms import EventForm, EventCancelForm, CategoryForm, EventSearchForm, TicketForm
 from events.event_services import EventService
+from atalaku import settings
 import logging
 
 
@@ -153,11 +154,22 @@ def event_buy_ticket(request, event_uuid=None):
     if request.method == 'POST':
         postdata = request.POST.copy()
         form = TicketForm(postdata)
-        logger.error('POST Data :')
-        for k,v in postdata.items():
-            logger.warning(f"k :{k} - v :{v}")
         if form.is_valid():
+            data = {
+                'requester_name': settings.REQUESTER_NAME,
+                'amount' : event.entree_fee,
+                'quantity': 1,
+                'unit_price': event.entree_fee,
+                'country' : 'CMR',
+                'product_name': event.name,
+                'customer_name': request.user.get_full_name(),
+                'description': event.description
+            }
             logger.info('EventTicket form is Valid')
+            response = EventService.request_payment(data)
+            if response :
+                logger.info("Payment Request successfuly sent : Token = \"%s\"", response['token'])
+
         else:
             logger.error('EventTicket form is not valid :')
             logger.error('Form fields errors :')

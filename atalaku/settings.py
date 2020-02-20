@@ -22,9 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['ATALAKU_SECRET_KEY']
-PAY_USERNAME = os.getenv('PAY_USER')
-PAY_REQUEST_TOKEN = os.getenv('PAY_REQUEST_TOKEN')
-
+PAY_REQUEST_URL = os.getenv('ATALAKU_PAY_REQUEST_URL')
+PAY_USERNAME = os.getenv('ATALAKU_PAY_REQUEST_USERNAME')
+PAY_REQUEST_TOKEN = os.getenv('ATALAKU_PAY_REQUEST_TOKEN')
+REQUESTER_NAME = 'ATALAKU'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

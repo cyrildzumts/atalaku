@@ -160,8 +160,8 @@ def event_buy_ticket(request, event_uuid=None):
             for k,v in form.errors.items():
                 logger.warning(f"k :{k} - v :{v}")
             logger.error('Form non fields errors :')
-            for k,v in form.non_field_errors.items():
-                logger.warning(f"k :{k} - v :{v}")
+            for e in form.non_field_errors():
+                logger.warning(f"error :{e}")
     elif request.method == 'GET':
         pass
     

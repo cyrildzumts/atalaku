@@ -49,11 +49,11 @@
             </div>
             <div clas="form-group">
                 <label for="name">{% trans 'Event' %} : </label>
-                <input id="name" type="text"  name="name" value="{{event.name}}" disabled>
+                <input id="name" type="text"  name="name" value="{{event.name}}" >
             </div>
             <div clas="form-group">
                 <label for="price">{% trans 'Price' %} : </label>
-                <input id="price" type="text"  name="price" value="{{event.entree_fee}}" disabled>
+                <input id="price" type="text"  name="price" value="{{event.entree_fee}}">
             </div>
             <div class="form-group">
                 <a class="mat-button mat-button-outlined warn" href="{% url 'events:event-home'%}">{% trans "Cancel" %}</a>

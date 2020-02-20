@@ -158,7 +158,7 @@ def event_buy_ticket(request, event_uuid=None):
         else:
             logger.error('EventTicket form is not valid :')
             logger.error('POST Data :')
-            for k,v in postdata:
+            for k,v in postdata.items():
                 logger.warning(f"k :{k} - v :{v}")
             logger.error('Form fields errors :')
             for k,v in form.errors.items():

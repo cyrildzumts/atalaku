@@ -116,7 +116,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
     'production': {
-	'ENGINE':   os.environ['ATALAKU_DEFAULT_ENGINE'],
+	'ENGINE':   os.environ['ATALAKU_DATABASE_ENGINE'],
 	'NAME'	:   os.environ['ATALAKU_DATABASE_NAME'],
 	'USER'	:   os.environ['ATALAKU_DATABASE_USERNAME'],
 	'PASSWORD': os.environ['ATALAKU_DATABASE_PW'],

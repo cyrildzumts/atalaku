@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['ATALAKU_SECRET_KEY']
 PAY_REQUEST_URL = os.getenv('ATALAKU_PAY_REQUEST_URL')
 PAY_USERNAME = os.getenv('ATALAKU_PAY_REQUEST_USERNAME')
 PAY_REQUEST_TOKEN = os.getenv('ATALAKU_PAY_REQUEST_TOKEN')
-REQUESTER_NAME = 'ATALAKU'
+REQUESTER_NAME = os.getenv('ATALAKU_PAY_REQUESTER_NAME', 'ATALAKU')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -125,13 +125,13 @@ DATABASES = {
         'sslmode': 'require'
     },
     'TEST'  :   {
-        'NAME': 'test_db',
+        'NAME': os.getenv('ATALAKU_TEST_DATABASE', 'atalaku_testdb'),
     },
    },
 
 }
 
-DEFAULT_DATABASE = os.environ.get('DJANGO_DATABASE', 'dev')
+DEFAULT_DATABASE = os.getenv('DJANGO_DATABASE', 'dev')
 DATABASES['default'] = DATABASES[DEFAULT_DATABASE]
 
 

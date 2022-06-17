@@ -1,0 +1,17 @@
+{% if list.data.style == 'ordered' %}
+{% autoescape off %}
+<ol class="ordered-list">
+    {% for item in list.data.items %}
+    <li>{{item}}</li>
+    {% endfor %}
+</ol>
+{% endautoescape %}
+{% else %}
+{% autoescape off %}
+<ul class="bullet-list">
+    {% for item in list.data.items %}
+    <li>{{item}}</li>
+    {% endfor %}
+</ul>
+{% endautoescape %}
+{% endif %}

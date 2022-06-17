@@ -60,3 +60,21 @@ def faq(request):
         'page_title': page_title,
     }
     return render(request, template_name,context)
+
+
+def privacy_policy(request):
+    template_name = "privacy_policy.html"
+    page_title =  UI_STRINGS.UI_PRIVACY_POLICY+ ' - ' + settings.SITE_NAME
+    context = {
+        'page_title': page_title
+    }
+    return render(request, template_name,context)
+
+
+def terms_of_use(request):
+    template_name = "terms_of_use.html"
+    page_title =  UI_STRINGS.UI_TERMS_OF_USE + ' - ' + settings.SITE_NAME
+    context = {
+        'page_title': page_title
+    }
+    return render(request, template_name,context)

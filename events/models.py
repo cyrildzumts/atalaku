@@ -142,7 +142,6 @@ class PaymentRequest(models.Model):
     verification_code = models.TextField(max_length=80, blank=True, null=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE ,blank=False )
     amount = models.DecimalField(max_digits=10,decimal_places=2, blank=False, null=False)
-    unit_price = models.IntegerField(blank=True, null=True)
     quantity = models.IntegerField(default=1, blank=True, null=True)
     tva = models.DecimalField(max_digits=5, decimal_places=3, blank=True, null=True)
     commission = models.DecimalField(max_digits=5,decimal_places=4, blank=True, null=True)

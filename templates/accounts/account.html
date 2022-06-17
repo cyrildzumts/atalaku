@@ -4,26 +4,27 @@
 {% block HEADER_BANNER %}
 
 {% endblock HEADER_BANNER %}
+
 {% block MAIN %}
 
-<div class="row">
-        <div class="tabs">
-                <div class="tabs--title">
-                        <div class="full welcome-text center">
-                                <p> {% trans "Welcome" %} {{name}}</p>
-                        </div>
-                </div>
-                <div class="row">
-                        <ul  class="action-list listview">
-                                <li class="action list-item"><a class="link" href="{%url 'accounts:update' account.account_uuid %}"> {% trans "Edit my account" %}</a> </li>
-                                <li class="action list-item"><a class="link" href="{%url 'accounts:password-change' %}"> {% trans "Change my password" %}</a> </li>      
-                        </ul>
-                </div>
-        </div>
-        <!--End of tabs-->
-</div>
+
+{% if not account.email_validated %}
 <div class="container">
-    {% include "tags/event_list_snippet.html" %}
+        <div class="mat-box">
+                <p>{% trans "You have not yet validated your email address." %}</p>
+                <p>{% trans "We have already sent you a validation link to your email address." %}</p>
+                <p>{% trans "Please click on the validation link sent to you." %}</p>
+                <p>{% trans "Click on the link below to receive a new activation link." %}</p>
+                <p><a class="mat-button mat-button-text" href="{% url 'accounts:send-validation' account.account_uuid %}">{% trans "Send Validation Link" %}</a></p>
+        </div>
 </div>
 
+{% else %}
+<div class="flex flex-left full padding-h"><h4>{% trans "Overview" %}</h4></div>
+<div class="container">
+        <div class="container">
+        {% include "tags/event_list_snippet.html" %}
+        </div>
+</div>
+{% endif %}
 {% endblock MAIN %}

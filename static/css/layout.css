@@ -22,9 +22,8 @@
 }
 
 li {
-    display: block;
     padding: 5px;
-
+    width: 100%;
     position: relative;
 }
 
@@ -92,15 +91,6 @@ ul.canva-nav li:hover > ul{
     margin: 5px;
 }
 */
-#product-page{
-
-}
-.image-container{
-
-}
-.product-infos{
-
-}
 .product-infos .divider{
     border: 1px dashed #E7E7E7;
 }
@@ -116,24 +106,7 @@ ul.canva-nav li:hover > ul{
     justify-content: left;
     text-align: left;
 }
-.product-infos .flat-btn{
-    
-}
-.product-infos .flat-cart-add-btn{
-    
-}
 
-
-#wishlist.card .header, #cart.card .header{
-    
-}
-#wishlist.card .content, #cart.card .content{
-    
-}
-
-.card .details{
-
-}
 /***********************************************************/
 .mod-dropdown{
     position: relative;

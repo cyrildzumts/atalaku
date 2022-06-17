@@ -1,0 +1,39 @@
+
+{% extends "event_base.html"%}
+{% load i18n %}
+{% load l10n %}
+
+{% if not show_banner %}
+{% block HEADER_BANNER %}
+
+{% endblock HEADER_BANNER %}
+{% endif %}
+{% block CATALOG_FILTER %}{% endblock CATALOG_FILTER %}
+{% block MAIN_CONTENT %}
+{% if NO_SEARCH_RESULTS %}
+{% include 'tags/no_search_results.html' %}
+{% else %}
+<div class="container">
+        <div class="product-list-wrapper">
+                <div class="nav-path-wrapper">
+                        <ul class="navigation-paths">
+                                <li class="mat-button-text path"><span>{{UI_STRINGS_CONTEXT.UI_SEARCH_RESULTS_LABEL}}</span><span class="padding-h bold">{{search}}</span></li>
+                        </ul>
+                </div>
+                {% if link_list %}
+                <div class="padding">
+                        <ul>
+                                {% for link in link_list %} <li><a href="{% url link.link %}" class="mat-button mat-button-outline">{{link.label}}</a></li> {% endfor %}
+                        </ul>
+                </div>
+                {% endif %}
+                <div id="products" class="products js-product-list">
+                        {% include "tags/products_snippet.html" with product_list=product_list %}
+                        <div class="full">
+                        {% include "tags/pagination.html" with page_set=product_list %}
+                        </div>
+                </div>
+        </div>
+</div>
+{% endif %}
+{% endblock MAIN_CONTENT %}

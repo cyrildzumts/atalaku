@@ -3,28 +3,42 @@
 .container {
   min-width: 100% !important;
   /*height: 100%;*/
-  margin: 0 auto;
+  /*margin: 0;*/
   display: flex !important;
   flex-wrap: wrap;
   position: relative !important;
-  align-items: baseline !important;
+  /*align-items: baseline !important;*/
   justify-content: center !important;
+}
 
+.main-container{
+  min-width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap;
+  position: relative !important;
+  /*align-items: baseline !important;*/
+  justify-content: center !important;
+}
 
+.display-flex{
+  display: flex;
 }
 
 .flex{
 	display: flex;
 	flex-direction: row;
   justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+  align-items: baseline;
 }
 
 
 
 .full{
   min-width: 100%;
+}
+
+.full-h{
+  height: 100%;
 }
 
 .col {
@@ -78,6 +92,10 @@
 .col-flex-12 { flex-basis: 100%; }
 
 
+.force-hidden{
+  display: none !important;
+}
+
 .hidden{
   display: none;
 }
@@ -85,34 +103,51 @@
 .row{
 	display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
 	width: 100%;
 }
 
-.row-left{
+.row-left, .flex-left{
   justify-content: flex-start !important;
 }
 
-.row-right{
+.row-right, .flex-right{
   justify-content: flex-end !important;
+}
+
+.align-left{
+  align-items: flex-start !important;
+}
+.align-right{
+  align-items: flex-end !important;
+}
+
+.align-center{
+  align-items: center !important;
+}
+
+.align-baseline{
+  align-items: baseline !important;
 }
 
 .flex-wrap{
   flex-wrap: wrap;
 }
-
-.flex-column{
-	display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-	width: 100%;
-
+.flex-center{
+  justify-content: center !important;
 }
 
-.spread-around{
-  
+.flex-column{
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.space-around{
+  justify-content: space-around;
+}
+
+.space-between{
+  justify-content: space-between;
 }
 .column {
   --columns: 12; /* number of columns in the grid system */
@@ -123,24 +158,20 @@
 
 .grid, .gridview{
   display: flex;
-  max-width: 100%;
+  width: 100%;
   margin: 0;
 	flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-evenly;
+  justify-content: flex-start;
 
-}
-
-.gridview{
-  width: 100%;
 }
 
 .listview{
   display: flex;
   min-width: 100%;
-  margin: 0 auto;
-  padding: 8px;
+  margin: 0.2em;
+  padding: 0.5em;
 	flex-direction: column;
   /*flex-wrap: wrap;*/
   text-decoration: none;
@@ -151,8 +182,8 @@
 
 .listview .list-title{
   width: 100%;
-  padding: 16px;
-  margin: 8px 0;
+  padding: 1em;
+  margin: 0.5em 0;
   text-decoration: none;
   border: 2px solid #ccc;
 }
@@ -194,7 +225,8 @@
 .col-xs-11 { width: 91.666%; }
 .col-xs-12 { width: 100%; }
 .hidden-xs {display: none;}
-
+.box{ width: 100%;}
+.mat-box{width: 100%;}
 }
   
 @media only screen and (max-width:40em){
@@ -215,7 +247,8 @@
   .col-m-11 { width: 91.666%; }
   .col-m-12 { width: 100%; }
   .hidden-m {display: none;}
-
+  .box{ width: 100%;}
+  .mat-box{width: 100%;}
 }
 
 

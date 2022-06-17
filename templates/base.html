@@ -53,9 +53,7 @@
         {% endblock STYLESHEET %}
 
         {% block external %} {% endblock external %}
-        {% if structured_data %}
-        {% json_ld structured_data %}
-        {% endif %}
+        
         {% block GOOGLE_TAG %}
         {% if ALLOW_GOOGLE_ANALYTICS %}
         <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>

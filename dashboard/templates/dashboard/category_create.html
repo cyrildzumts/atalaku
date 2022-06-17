@@ -10,10 +10,13 @@
         <div class="mat-box container">
             <div class="col-m-12">
                 <div class="box create-form">
-                    <div class="form-group">
-                        <label for="name">{% trans 'Category name' %}</label>
-                        <input id="name" class="mat-input" type="text" name="name">
+                    <div class="form-group-wrapper">
+                        <div class="form-group">
+                            <label for="name">{% trans 'Category name' %}</label>
+                            <input id="name"  type="text" name="name">
+                        </div>
                     </div>
+                    
                     <div class="actions">
                         <a class="mat-button mat-button-outline" href="{% url 'dashboard:home' %}">{% trans "Cancel" %}</a>
                         <button type="submit" class="mat-button mat-button-default">{% trans "ADD CATEGORY" %}</button>

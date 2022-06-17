@@ -2,6 +2,7 @@
 *.pyc
 staticfiles/*
 static_root/*
+translation_tools
 *.jpg
 *.png
 *.bmp
@@ -10,8 +11,14 @@ static_root/*
 .vscode
 */migrations/*
 */__pycache__/*
+*_site.conf
+*_site*.conf.backup
+robots.txt
 log
 logs
 *.log
+toxrequirements.txt
+celerybeat-schedule
+media
 __pycache__
 XDG_CACHE_HOME

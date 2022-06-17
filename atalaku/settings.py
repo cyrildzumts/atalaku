@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'accounts',
+    'core.apps.CoreConfig',
     'events.apps.EventsConfig',
     'dashboard.apps.DashboardConfig',
     'rest_framework',

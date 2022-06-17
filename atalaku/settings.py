@@ -75,6 +75,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    #'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -113,7 +114,7 @@ WSGI_APPLICATION = 'atalaku.wsgi.application'
 DATABASES = {
     'dev': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'atalaku.sqlite3'),
     },
     'production': {
 	'ENGINE':   os.environ['ATALAKU_DATABASE_ENGINE'],
@@ -188,12 +189,6 @@ LOGGING = {
             'formatter': 'file',
             'filename':'logs/atalaku.log'
         },
-        'file_custom_apps': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'file',
-            'filename':'logs/custom_apps/apps.log'
-        },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
@@ -201,22 +196,22 @@ LOGGING = {
     },
     'loggers': {
         '' : {
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'handlers': ['console', 'file']
         },
-        'accounts' : {
-            'level': 'DEBUG',
-            'handlers': ['console_custom_apps', 'file_custom_apps'],
-            'propagate': False,
-        },
         'django': {
-            'level': 'ERROR',
+            'level': 'WARNING',
             'handlers': ['file', 'console'],
             'propagate': False,
         },
         'django.request': {
             'handlers': ['mail_admins', 'console'],
-            'level': 'ERROR',
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'PIL':{
+            'handlers': ['console'],
+            'level': 'WARNING',
             'propagate': False,
         }
     }

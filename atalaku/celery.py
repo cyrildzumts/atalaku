@@ -4,7 +4,7 @@ from celery import Celery
 from celery.schedules import crontab
 import os
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flished.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'atalaku.settings')
 app = Celery(settings.SITE_NAME)
 app.config_from_object('django.conf:settings', namespace=settings.CELERY_NAMESPACE)
 app.conf.task_queues = (

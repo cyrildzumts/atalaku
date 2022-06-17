@@ -70,7 +70,6 @@ SITE_NAME = os.environ['ATALAKU_SITE_NAME']
 META_KEYWORDS = "Event,Events, Africa, Africans, Africains, Evènement, Publicité, publication, party, fête,anniversaire"
 META_DESCRIPTION = "ATALAKU est un site de publication des evenements africains qui on lieu n'importe où dans le monde"
 # Application definition
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = os.environ.get('ATALAKU_EMAIL_HOST')
 EMAIL_PORT = os.environ.get('ATALAKU_EMAIL_PORT')
 EMAIL_HOST_PASSWORD = os.environ.get('ATALAKU_EMAIL_PASSWORD')

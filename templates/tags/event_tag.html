@@ -10,7 +10,7 @@
         {% endif %}
     </a>
     <div class="product-info">
-        <a class="mat-button mat-button-text" href="{{event.get_slug_url}}">
+        <a class="mat-button mat-button-text flex-wrap" href="{{event.get_slug_url}}">
             <div class="col-m-12">
                     <div class="product-name left">
                             <span class="full">{{event.name}}</span> 
@@ -22,11 +22,11 @@
             <div class="col-m-12">
                     {% if event.free %}
                     <div class="price">
-                            <span>{% translate "Entree" %}</span><span>{% translate "Free" %}</span>
+                        <span>{% translate "Entree" %}</span><span class="padding-h">{% translate "Free" %}</span>
                     </div>
                     {% else %}
                     <div class="price">
-                        <span>{% translate "Entree" %}</span><span>{{event.entree_fee|floatformat:"-2"}} {{UI_CURRENCY}}</span>
+                        <span>{% translate "Entree" %}</span><span class="padding-h">{{event.entree_fee|floatformat:"-2"}} {{UI_CURRENCY}}</span>
                     </div>
                     {% endif %}
             </div>

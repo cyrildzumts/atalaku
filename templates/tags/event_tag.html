@@ -21,11 +21,11 @@
             </div>
             <div class="col-m-12">
                     {% if event.free %}
-                    <div class="price">
+                    <div class="price left">
                         <span>{% translate "Entree" %}</span><span class="padding-h">{% translate "Free" %}</span>
                     </div>
                     {% else %}
-                    <div class="price">
+                    <div class="price left">
                         <span>{% translate "Entree" %}</span><span class="padding-h">{{event.entree_fee|floatformat:"-2"}} {{UI_CURRENCY}}</span>
                     </div>
                     {% endif %}

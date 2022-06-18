@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from events import constants
+import os,sys
 import uuid
 # Create your models here.
 
@@ -32,8 +37,16 @@ def event_file_path(instance, filename):
     name = instance.name + "." + file_ext
     return "events/event_{0}_{1}".format(instance.user.id, name)
 
+
+def upload_event_image_to(instance, filename):
+    return f"events/{instance.slug}-{instance.name}/{instance.slug}-{instance.id}-{filename}"
+
+def upload_category_image_to(instance, filename):
+    return f"categories/{instance.slug}-{instance.name}/{instance.slug}-{instance.id}-{filename}"
+
 class Category(models.Model):
     name = models.CharField(max_length=32, blank=False, null=False)
+    image = models.ImageField(upload_to=upload_category_image_to,null=True, blank=True)
     slug = models.SlugField()
     views_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -50,6 +63,23 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if self.image:
+            filename,ext = os.path.splitext(self.image.path)
+            if ext != constants.WEBP_EXT:
+                name,ext2 = os.path.splitext(self.image.name)
+                finale_name = f"{name}{constants.WEBP_EXT}"
+                #finale_filename = f"{filename}{constants.WEBP_EXT}"
+                image = Image.open(self.image)
+                image.load()
+                img_stream = BytesIO()
+                img = image.convert("RGB")
+                img.save(img_stream,format="WEBP", quality=constants.WEBP_QUALITY)
+                img_stream.seek(0)
+                self.image = InMemoryUploadedFile(img_stream,'ImageField', finale_name, 'image/webp',sys.getsizeof(img_stream),None)
+
+        super(Category, self).save(*args, **kwargs)
 
 class Event(models.Model):
     participants = models.ManyToManyField(User,related_name='registered_events', blank=True)
@@ -61,7 +91,7 @@ class Event(models.Model):
     where = models.CharField(max_length=64,null=False, blank=False)
     start = models.DateField(null=False, blank=False)
     end = models.DateField(null=True, blank=True)
-    image = models.ImageField(upload_to=event_file_path,null=True, blank=True)
+    image = models.ImageField(upload_to=upload_event_image_to,null=True, blank=True)
     country = models.CharField(max_length=64,null=False, blank=False)
     
     city = models.CharField(max_length=64,null=False, blank=False)
@@ -94,6 +124,23 @@ class Event(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if self.image:
+            filename,ext = os.path.splitext(self.image.path)
+            if ext != constants.WEBP_EXT:
+                name,ext2 = os.path.splitext(self.image.name)
+                finale_name = f"{name}{constants.WEBP_EXT}"
+                #finale_filename = f"{filename}{constants.WEBP_EXT}"
+                image = Image.open(self.image)
+                image.load()
+                img_stream = BytesIO()
+                img = image.convert("RGB")
+                img.save(img_stream,format="WEBP", quality=constants.WEBP_QUALITY)
+                img_stream.seek(0)
+                self.image = InMemoryUploadedFile(img_stream,'ImageField', finale_name, 'image/webp',sys.getsizeof(img_stream),None)
+
+        super(Event, self).save(*args, **kwargs)
     
 
     class Meta:

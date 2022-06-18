@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<form id="category-create-form" action="{% url 'dashboard:category-create' %}" method="post">{% csrf_token %}
+        
+    <div class="mat-box container">
+        <div class="col-m-12">
+            <div class="box">
+                <div class="bold">{% trans "Event image" %}</div>
+               {% include "tags/images_uploader.html" with FORM_ID="category-create-form" INPUT_ID="image" INPUT_NAME="image" UPLOADER_TITLE=UI_STRINGS_CONTEXT.UI_CAMPAIGN_IMAGE_TITLE%}
+            </div>
+        </div>
+        <div class="col-m-12">
+            <div class="box create-form">
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="name">{% trans 'Category name' %}</label>
+                        <input id="name"  type="text" name="name">
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <a class="mat-button mat-button-outline" href="{% url 'dashboard:home' %}">{% trans "Cancel" %}</a>
+                    <button type="submit" class="mat-button mat-button-default">{% trans "Create" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+</form>

@@ -1,17 +1,15 @@
 {% load i18n %}
 
-<form action="{% url 'events:event-create' %}" method="post">{% csrf_token %}
+<form id="event-create-form" name="event_form_create" action="{% url 'events:event-create' %}" method="post">{% csrf_token %}
     <input type="hidden" name="published_by" value="{{request.user.pk}}">
     <div class="container">
         <div class="col-m-12 col-4">
             <div class="mat-box">
 
-                <div class="img-responsive">
-                    <img class="full" src="" alt="">
-
-                    <div class="form-group">
-                        <label for="image">{% trans "Event Image" %}</label>
-                        <input id="image" type="file" name="image" placeholder="{% trans 'Event Image' %}" >
+                <div class="col-m-12">
+                    <div class="box">
+                        <div class="bold">{% trans "Event image" %}</div>
+                       {% include "tags/images_uploader.html" with FORM_ID="event-create-form" INPUT_ID="image" INPUT_NAME="image" UPLOADER_TITLE=UI_STRINGS_CONTEXT.UI_CAMPAIGN_IMAGE_TITLE%}
                     </div>
                 </div>
                 <div class="form-group-wrapper">
@@ -29,12 +27,6 @@
                         {% endfor %}
                         </div>
                     </div>
-                    {% comment %} <div class="form-group">
-                        <label for="category">{% trans "Event Category" %}</label>
-                        <select name="category" id="category">
-                            {% for category in categories %} <option value="{{category.pk}}">{% trans category.name %}</option> {% endfor %}
-                        </select>
-                    </div> {% endcomment %}
                     <div class="form-group">
                         <label for="when">{% trans "Time" %}</label>
                         <input id="when" type="datetime-local" name="when">

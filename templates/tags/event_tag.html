@@ -14,8 +14,8 @@
             <div class="col-m-12">
                     <div class="flex flex-left flex-wrap left">
                             <span class="padding-bottom full">{{event.name}}</span> 
-                            <span class="flex space-around padding-bottom full">
-                                <span>{{event.when}}</span>
+                            <span class="flex space-between padding-bottom full">
+                                <span>{{event.when|date:'F J Y'}}</span>
                                 <span>{{event.city}}</span>
                             </span>
                     </div>

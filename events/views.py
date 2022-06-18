@@ -70,6 +70,20 @@ def event_detail(request, event_uuid=None):
     }
     return render(request, template_name, context)
 
+def event_detail_slug(request,category_slug=None, slug=None):
+    event = get_object_or_404(Event, category__slug=category_slug, slug=slug)
+    Event.objects.filter(pk=event.pk).update(views_count=F('views_count') + 1)
+    event.refresh_from_db()
+    template_name = 'events/event_detail.html'
+    context = {
+        'event': event,
+        'page_title': 'Event ' + event.name,
+        'is_taking_part' : EventService.is_event_participant(event,request.user),
+        'is_favorite' : EventService.is_favorite_event(event, request.user),
+        'monitoring': EventService.event_summary(event.event_uuid)
+    }
+    return render(request, template_name, context)
+
 
 @login_required
 def event_update(request, event_uuid=None):

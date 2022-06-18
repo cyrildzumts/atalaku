@@ -52,6 +52,9 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     category_uuid = models.UUIDField(default=uuid.uuid4)
 
+    def get_slug_url(self):
+        return reverse("events:category-detail", kwargs={"slug": self.slug})
+
     def get_absolute_url(self):
         return reverse("events:category-detail", kwargs={"pk": self.pk})
     
@@ -113,6 +116,9 @@ class Event(models.Model):
     event_uuid = models.UUIDField(default=uuid.uuid4)
     slug = models.SlugField()
     
+    def get_slug_url(self):
+        return reverse("events:event-detail", kwargs={"category_slug": self.category.slug,"slug": self.slug})
+
     def get_absolute_url(self):
         return reverse("events:event-detail", kwargs={"event_uuid": self.event_uuid})
     

@@ -1,0 +1,73 @@
+{% load i18n %}
+
+<div class="filterable event product-card" data-name="{{event.name}}" data-where="{{event.where}}">
+
+    <a class="product-wrapper-link" href="{{event.get_slug_url}}" title="{{event.name}}">
+        {% if event.image %}
+        <div class="img-wrapper product-image">
+                <img class="img-responsive" loading="lazy"  data-src="{{event.image}}" alt="{{event.name}}">
+        </div>
+        {% endif %}
+    </a>
+    <div class="product-info">
+        <a class="mat-button mat-button-text" href="{{event.get_slug_url}}">
+            <div class="col-m-12">
+                    <div class="product-name left">
+                            <span class="full">{{event.name}}</span> 
+                            <span class="full">{{event.when}}</span>
+                            <span class="full">{{event.city}}</span>
+                            <span class="full">{{event.country}}</span>
+                    </div>
+            </div>
+            <div class="col-m-12">
+                    {% if event.free %}
+                    <div class="price">
+                            <span>{% translate "Entree" %}</span><span>{% translate "Free" %}</span>
+                    </div>
+                    {% else %}
+                    <div class="price">
+                        <span>{% translate "Entree" %}</span><span>{{event.entree_fee|floatformat:"-2"}} {{UI_CURRENCY}}</span>
+                    </div>
+                    {% endif %}
+            </div>
+        </a>
+    </div><!--End of details-->
+</div>
+
+{% comment %} <div class="mat-box event js-filterable" data-name="{{event.name}}" data-where="{{event.where}}">
+    <div class="col-m-12 col-2">
+        {% if event.image %}
+        <div class="img">
+            <img class="responsive-img" src="{{event.image.url}}" alt="">
+        </div>
+        {% endif %}
+    </div><!--End of col-2-->
+    
+    <div class="col-m-12 col-8">
+        <div class="content">
+            <h4>{{event.name}}</h4>
+            <div class="description">
+                <p>{{event.description}}</p>
+            </div>
+            <div class="details emphasis">
+                <span>{{event.when|date:"M j, Y"}}</span> <i class="separator-ht"></i>
+                <span>{{event.where}}</span> <i class="separator-ht"></i>
+                <span>{{event.city}}</span> <i class="separator-ht"></i>
+                <span>{{event.country}}</span> 
+            </div>
+        
+        </div>
+    </div><!--End of col-8-->
+    <div class="col-m-12 col-2">
+        <div class="actions">
+            {% if event.entree_fee %}
+                <div class="mat-button mat-button-text"><span>{{event.entree_fee}}</span> <span>{% trans "XAF" %}</span></div>
+            {% else %}
+                <div class="mat-button mat-button-text"><span>{% trans "Free" %}</span></div>
+            {% endif %}
+            <div><a class="mat-button mat-button-outlined" href="{% url 'events:event-detail' event.event_uuid %}">{% trans "Details" %}</a></div>
+            
+        </div>
+    </div><!--End of col-2-->
+    
+</div><!--End of box--> {% endcomment %}

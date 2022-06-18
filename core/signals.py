@@ -82,4 +82,4 @@ def generate_category_slug(sender, instance, *args, **kwargs):
 
 @receiver(pre_save, sender=Event)
 def generate_event_slug(sender, instance, *args, **kwargs):
-    instance.slug = slugify( instance.title)
+    instance.slug = slugify( instance.name)

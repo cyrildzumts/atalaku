@@ -1115,16 +1115,15 @@ define(['require','filters','ajax_api', 'element_utils', 'editor/editor',
     })();
 
     var ImageManager = (function(){
-        function ImageManager(){
-            this.form = undefined;
+        function ImageManager(drag_area_selector){
+            this.form = null;
             this.supported_formats = ['jpg', 'jpeg', 'png', 'webp'];
             this.input_files;
-            this.drag_area_selector = undefined;
+            this.drag_area_selector = drag_area_selector || ".drag-area";
         }
         ImageManager.prototype.init = function(){
             let self = this;
             this.form = document.getElementById("event-create-form") || document.getElementById("category-create-form");
-            let drag_area_selector = this.drag_area_selector || ".drag-area";
             this.drag_areas = document.querySelectorAll(this.drag_area_selector);
             if(!this.form){
                 return;

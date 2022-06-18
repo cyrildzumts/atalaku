@@ -57,7 +57,7 @@ class Event(models.Model):
     published_by = models.ForeignKey(User, related_name='published_events', blank=True, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='events', blank=True, null=True)
     
-    when = models.DateField(null=False, blank=False)
+    when = models.DateTimeField(null=False, blank=False)
     where = models.CharField(max_length=64,null=False, blank=False)
     start = models.DateField(null=False, blank=False)
     end = models.DateField(null=True, blank=True)

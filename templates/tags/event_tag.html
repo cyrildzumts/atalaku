@@ -13,19 +13,19 @@
         <a class="mat-button mat-button-text flex-wrap" href="{{event.get_slug_url}}">
             <div class="col-m-12">
                     <div class="flex flex-left flex-wrap left">
-                            <span class="full">{{event.name}}</span> 
-                            <span class="full">{{event.when}}</span>
-                            <span class="full">{{event.city}}</span>
-                            <span class="full">{{event.country}}</span>
+                            <span class="padding-bottom full">{{event.name}}</span> 
+                            <span class="padding-bottom full">{{event.when}}</span>
+                            <span class="padding-bottom full">{{event.city}}</span>
+                            <span class="padding-bottom full">{{event.country}}</span>
                     </div>
             </div>
             <div class="col-m-12">
                     {% if event.free %}
-                    <div class="price left">
+                    <div class="price left padding-bottom">
                         <span>{% translate "Entree" %}</span><span class="padding-h">{% translate "Free" %}</span>
                     </div>
                     {% else %}
-                    <div class="price left">
+                    <div class="price left padding-bottom">
                         <span>{% translate "Entree" %}</span><span class="padding-h">{{event.entree_fee|floatformat:"-2"}} {{UI_CURRENCY}}</span>
                     </div>
                     {% endif %}

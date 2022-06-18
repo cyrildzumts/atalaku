@@ -1135,7 +1135,7 @@ define(['require','filters','ajax_api', 'element_utils', 'editor/editor',
             if(!this.input_files){
                 return;
             }
-            $(drag_area_selector).on('drag dragstart dragend dragover dragenter drop', function(e){
+            $(this.drag_area_selector).on('drag dragstart dragend dragover dragenter drop', function(e){
                 e.preventDefault();
                 e.stopPropagation();
             }).on('dragover dragenter', function(){

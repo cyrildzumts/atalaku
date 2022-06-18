@@ -1408,9 +1408,6 @@ define(['require','filters','ajax_api', 'element_utils', 'editor/editor',
         notify_init(notification_wrapper, messages);
         var listfilter = new ListFilter();
         Filter.init();
-        fileUpload = new FileUpload();
-        postManager = new PostManager();
-        postManager.init();
         let comments = document.getElementById('comments');
         if(comments){
             auto_fetch_comments(comments.dataset.post, comments);

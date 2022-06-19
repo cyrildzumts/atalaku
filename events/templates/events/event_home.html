@@ -10,7 +10,7 @@
 <nav class="nav">
     <ul class="nav nav-h">
      {% for category in categories %}
-        <li class="item"><a class="mat-button mat-button-text" href="{% url 'events:category-events' category.slug %}">{% trans category.name %}</a></li>
+        <li class="item"><a class="mat-button mat-button-text" href="{% url 'events:category-detail' category.slug %}">{% trans category.name %}</a></li>
      {% endfor %}
     </ul>
 </nav>

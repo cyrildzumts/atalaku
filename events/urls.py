@@ -8,7 +8,7 @@ app_name = 'events'
 
 urlpatterns = [
     path('', views.event_home, name='event-home'),
-    path('events/<slug:category_slug>/', views.event_category_events, name='category-events'),
+    path('events/<slug:category_slug>/', views.event_category_events, name='category-detail'),
     path('event-home/', views.event_home, name='event-home'),
     path('event-list/', views.events, name='events'),
     path('event-create/', views.event_create, name='event-create'),

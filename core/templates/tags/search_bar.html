@@ -1,0 +1,13 @@
+{% load i18n %}
+{% load cache %}
+
+{% cache TEMPLATE_CACHE_TIMEOUT search LANGUAGE_CODE search_id %}
+<div class="search-form-wrapper {{cls}}">
+    <form id="search-form" class="form" name="search-form" action="{% url 'events:search' %}" method="get">
+        <div class="search-box">
+            <i class="fas fa-search icon"></i>
+            <input type="text" id="search-{{search_id}}" class="search" name="search" value="{{search|default_if_none:''}}" aria-label="{{UI_STRINGS_CONTEXT.UI_SEARCH_LABEL}}" placeholder="{{UI_STRINGS_CONTEXT.UI_SEARCH_LABEL}}">
+        </div>
+    </form>
+</div>
+{% endcache %}

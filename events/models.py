@@ -53,7 +53,7 @@ class Category(models.Model):
     category_uuid = models.UUIDField(default=uuid.uuid4)
 
     def get_slug_url(self):
-        return reverse("events:category-detail", kwargs={"slug": self.slug})
+        return reverse("events:category-detail", kwargs={"category_slug": self.slug})
 
     def get_absolute_url(self):
         return reverse("events:category-detail", kwargs={"pk": self.pk})

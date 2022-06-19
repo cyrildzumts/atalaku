@@ -1,7 +1,4 @@
 {% load i18n %}
-{% load cache %}
-
-{% cache TEMPLATE_CACHE_TIMEOUT search LANGUAGE_CODE search_id %}
 <div class="search-form-wrapper {{cls}}">
     <form id="search-form" class="form" name="search-form" action="{% url 'events:search' %}" method="get">
         <div class="search-box">
@@ -10,4 +7,3 @@
         </div>
     </form>
 </div>
-{% endcache %}

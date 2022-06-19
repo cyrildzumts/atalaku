@@ -1,14 +1,14 @@
 {% load i18n %}
 {% load static %} 
 
-{% if root_category_list %}
+{% if categories %}
 <div id="root-category-list" class="category-nav">
     <ul class="list-horizontal">
-            {% for c in root_category_list %}
+            {% for c in categories %}
                 {% if c in CATEGORY_PATHS  %}
-                <li class="active"><a class="mat-button" href="{{c.get_slug_url}}"><span>{% trans c.display_name %}</span></a></li>
+                <li class="active"><a class="mat-button" href="{{c.get_slug_url}}"><span>{% trans c.name %}</span></a></li>
                 {% else %}
-                <li><a class="mat-button" href="{{c.get_slug_url}}"><span>{% trans c.display_name %}</span></a></li>
+                <li><a class="mat-button" href="{{c.get_slug_url}}"><span>{% trans c.name %}</span></a></li>
                 {% endif %}
             {% endfor %}
             

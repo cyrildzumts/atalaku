@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<div class="event">
+    <div class="event-title">
+        <div><span>{{event.name}}</span></div>
+        <div><span><i class="fas fa-filter"></i>{{event.category.name}}</span><span><i class="fas fa-users"></i>{{monitoring.participants}}</span><span><i class="fas fa-heart"></i>{{monitoring.likes}}</span></div>
+    </div>
+    <div>
+        <div class="flex flex-left">
+            <div><span class="item"><i class="fas fa-map-marked"></i> <span>{{event.address}}</span></span></div>
+            <div><span class="item"><i class="far fa-calendar-alt"></i> <span>{{event.when}}</span></span></div>
+        </div>
+        <div class="">
+            <div><span class="item"><i class="fas fa-map-marker-alt"></i> <span>{{event.where}} - </span></div>
+            <div><span>{{event.city}}</span> - <span>{{event.country}}</span></span></div>
+        </div>
+    </div>
+    <div>
+        <p>{{event.description}}</p>
+    </div>
+    <div class="row row-left ">
+        <span class="item"><i class="icon far fa-money-bill-alt"></i> <span>{% if event.entree_fee %}{{event.entree_fee}}{% else %}{% trans "Entree free" %}{% endif %}</span></span>
+    </div>
+    <div class="actions">
+        {% if is_favorite %}
+        <a class="mat-button mat-button-outline" href="{% url 'events:event-unlike' event.event_uuid %}">{% trans "UNLIKE" %}</a>
+        {% else %}<a class="mat-button mat-button-outline" href="{% url 'events:event-like' event.event_uuid %}">{% trans "LIKE" %}</a>{% endif %}
+        <span>
+        {% if event.entree_fee %}
+        <a class="mat-button mat-button-default" href="{% url 'events:event-buy-ticket'  event.event_uuid %}">{% trans "Buy Ticket" %}</a>
+        {% endif %}</span>
+        {% if is_taking_part %}
+        <a class="mat-button mat-button-default" href="{% url 'events:event-remove-participant'  event.event_uuid %}">{% trans "Cancled Participation" %}</a>
+        
+        {% else %}
+        <a class="mat-button mat-button-default" href="{% url 'events:event-add-participant'  event.event_uuid %}">{% trans "I will be there" %}</a>
+        {% endif %}
+    </div>
+</div>

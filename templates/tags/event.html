@@ -1,22 +1,21 @@
 {% load i18n %}
 
 <div class="event">
-    <div class="event-title">
+    <div class="event-title padding-v">
         <div><h3>{{event.name}}</h3></div>
         <div><span><i class="fas fa-filter icon"></i>{{event.category.name}}</span><span><i class="fas fa-users icon"></i>{{monitoring.participants}}</span><span><i class="fas fa-heart icon"></i>{{monitoring.likes}}</span></div>
     </div>
     <div>
-        <div class="">
-            <div><span class="item"><i class="fas fa-map-marked"></i> <span>{{event.address}}</span></span></div>
+        <div class="padding-bottom">
             <div><span class="item"><i class="far fa-calendar-alt"></i> <span>{{event.when}}</span></span></div>
-        </div>
-        <div class="">
             <div><span class="item"><i class="fas fa-map-marker-alt"></i> <span>{{event.where}} - </span></div>
+            <div><span class="item"><i class="fas fa-map-marked"></i> <span>{{event.address}}</span></span></div>
             <div><span>{{event.city}}</span> - <span>{{event.country}}</span></span></div>
         </div>
     </div>
     <div>
-        <p>{{event.description}}</p>
+        <div><span>{% trans "Description" %}</span></div>
+        <div><p>{{event.description}}</p></div>
     </div>
     <div class="row row-left ">
         <span class="item"><i class="icon far fa-money-bill-alt"></i> <span>{% if event.entree_fee %}{{event.entree_fee}}{% else %}{% trans "Entree free" %}{% endif %}</span></span>
